@@ -1,0 +1,12 @@
+{
+   "tasks": [
+      {
+         "name": "check-commit-msg",
+         "command": "bash",
+         "args": [
+            "-c",
+            "msg=$(cat ${args[0]}); if [[ ! $msg =~ ^(feat|fix|chore|docs|refactor|test|build|ci)(\\([a-z0-9-]+\\))?:\\ .+ ]]; then echo \"[Husky] Lỗi: Commit message như cái dái! Phải đúng chuẩn 'type(scope): message' (ví dụ: feat: add husky). Bỏ qua nếu là Merge commit.\"; exit 1; fi"
+         ]
+      }
+   ]
+}
