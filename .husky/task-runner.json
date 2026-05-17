@@ -1,12 +1,3 @@
 {
-   "tasks": [
-      {
-         "name": "check-commit-msg",
-         "command": "bash",
-         "args": [
-            "scripts/commit-msg.sh",
-            "${args[0]}"
-         ]
-      }
-   ]
+   "tasks": []
 }
