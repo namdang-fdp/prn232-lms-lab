@@ -1,0 +1,43 @@
+meta {
+  name: Create Valid
+  type: http
+  seq: 1
+}
+
+script:pre-request {
+  const suffix = Date.now();
+  bru.setVar("semesterName", `E2E Semester ${suffix}`);
+  bru.setVar("semesterUpdatedName", `E2E Semester Updated ${suffix}`);
+}
+
+post {
+  url: http://localhost:8080/api/semesters
+  body: json
+  auth: none
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "semesterName": "{{semesterName}}",
+    "startDate": "2026-01-05",
+    "endDate": "2026-05-10"
+  }
+}
+
+tests {
+  test("returns ApiResponse success with created semester", function() {
+    expect(res.status).to.equal(201);
+    expect(res.body).to.have.property("success", true);
+    expect(res.body).to.have.property("data");
+    expect(res.body.data.semesterId).to.be.a("number");
+  });
+}
+
+script:post-response {
+  bru.setVar("semesterId", res.body.data.semesterId);
+}

@@ -1,0 +1,42 @@
+meta {
+  name: Create Valid
+  type: http
+  seq: 1
+}
+
+script:pre-request {
+  const suffix = Date.now().toString().slice(-8);
+  bru.setVar("subjectCode", `E2E${suffix}`);
+  bru.setVar("subjectUpdatedCode", `E2U${suffix}`);
+}
+
+post {
+  url: http://localhost:8080/api/subjects
+  body: json
+  auth: none
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "subjectCode": "{{subjectCode}}",
+    "subjectName": "E2E Subject",
+    "credit": 3
+  }
+}
+
+tests {
+  test("returns ApiResponse success with created subject", function() {
+    expect(res.status).to.equal(201);
+    expect(res.body).to.have.property("success", true);
+    expect(res.body.data.subjectId).to.be.a("number");
+  });
+}
+
+script:post-response {
+  bru.setVar("subjectId", res.body.data.subjectId);
+}

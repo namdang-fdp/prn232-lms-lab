@@ -1,0 +1,32 @@
+meta {
+  name: Update
+  type: http
+  seq: 5
+}
+
+put {
+  url: http://localhost:8080/api/subjects/{{subjectId}}
+  body: json
+  auth: none
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "subjectCode": "{{subjectUpdatedCode}}",
+    "subjectName": "E2E Subject Updated",
+    "credit": 4
+  }
+}
+
+tests {
+  test("returns ApiResponse success with updated subject", function() {
+    expect(res.status).to.equal(200);
+    expect(res.body).to.have.property("success", true);
+    expect(res.body.data.subjectCode).to.equal(bru.getVar("subjectUpdatedCode"));
+  });
+}

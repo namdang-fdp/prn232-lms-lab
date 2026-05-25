@@ -1,0 +1,33 @@
+meta {
+  name: Update
+  type: http
+  seq: 5
+}
+
+put {
+  url: http://localhost:8080/api/enrollments/{{enrollmentId}}
+  body: json
+  auth: none
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "studentId": 1,
+    "courseId": 11,
+    "enrollDate": "2026-02-01",
+    "status": "Completed"
+  }
+}
+
+tests {
+  test("returns ApiResponse success with updated enrollment", function() {
+    expect(res.status).to.equal(200);
+    expect(res.body).to.have.property("success", true);
+    expect(res.body.data.status).to.equal("Completed");
+  });
+}

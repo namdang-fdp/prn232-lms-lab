@@ -1,0 +1,32 @@
+meta {
+  name: Update
+  type: http
+  seq: 5
+}
+
+put {
+  url: http://localhost:8080/api/semesters/{{semesterId}}
+  body: json
+  auth: none
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "semesterName": "{{semesterUpdatedName}}",
+    "startDate": "2026-01-12",
+    "endDate": "2026-05-17"
+  }
+}
+
+tests {
+  test("returns ApiResponse success with updated semester", function() {
+    expect(res.status).to.equal(200);
+    expect(res.body).to.have.property("success", true);
+    expect(res.body.data.semesterName).to.equal(bru.getVar("semesterUpdatedName"));
+  });
+}

@@ -1,0 +1,41 @@
+meta {
+  name: Create Valid
+  type: http
+  seq: 1
+}
+
+script:pre-request {
+  bru.setVar("courseName", `E2E Course ${Date.now()}`);
+  bru.setVar("courseUpdatedName", `E2E Course Updated ${Date.now()}`);
+}
+
+post {
+  url: http://localhost:8080/api/courses
+  body: json
+  auth: none
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "courseName": "{{courseName}}",
+    "semesterId": 1,
+    "subjectId": 1
+  }
+}
+
+tests {
+  test("returns ApiResponse success with created course", function() {
+    expect(res.status).to.equal(201);
+    expect(res.body).to.have.property("success", true);
+    expect(res.body.data.courseId).to.be.a("number");
+  });
+}
+
+script:post-response {
+  bru.setVar("courseId", res.body.data.courseId);
+}

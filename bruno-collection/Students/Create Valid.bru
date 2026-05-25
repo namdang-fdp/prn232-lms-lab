@@ -1,0 +1,42 @@
+meta {
+  name: Create Valid
+  type: http
+  seq: 1
+}
+
+script:pre-request {
+  const suffix = Date.now();
+  bru.setVar("studentEmail", `e2e.student.${suffix}@lms.local`);
+  bru.setVar("studentUpdatedEmail", `e2e.student.updated.${suffix}@lms.local`);
+}
+
+post {
+  url: http://localhost:8080/api/students
+  body: json
+  auth: none
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "fullName": "E2E Student",
+    "email": "{{studentEmail}}",
+    "dateOfBirth": "2001-02-03"
+  }
+}
+
+tests {
+  test("returns ApiResponse success with created student", function() {
+    expect(res.status).to.equal(201);
+    expect(res.body).to.have.property("success", true);
+    expect(res.body.data.studentId).to.be.a("number");
+  });
+}
+
+script:post-response {
+  bru.setVar("studentId", res.body.data.studentId);
+}

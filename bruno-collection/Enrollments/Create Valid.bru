@@ -1,0 +1,37 @@
+meta {
+  name: Create Valid
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:8080/api/enrollments
+  body: json
+  auth: none
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "studentId": 1,
+    "courseId": 11,
+    "enrollDate": "2026-01-15",
+    "status": "Active"
+  }
+}
+
+tests {
+  test("returns ApiResponse success with created enrollment", function() {
+    expect(res.status).to.equal(201);
+    expect(res.body).to.have.property("success", true);
+    expect(res.body.data.enrollmentId).to.be.a("number");
+  });
+}
+
+script:post-response {
+  bru.setVar("enrollmentId", res.body.data.enrollmentId);
+}
