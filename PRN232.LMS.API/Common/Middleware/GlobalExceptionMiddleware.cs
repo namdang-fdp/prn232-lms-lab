@@ -2,6 +2,7 @@ using System.Net;
 using System.Text.Json;
 using PRN232.LMS.API.Common.Response;
 using PRN232.LMS.API.Common.Exceptions;
+using PRN232.LMS.Services.Exceptions;
 
 namespace PRN232.LMS.API.Common.Middleware;
 
@@ -44,6 +45,11 @@ public class GlobalExceptionMiddleware
             case ApiException apiEx:
                 context.Response.StatusCode = apiEx.StatusCode;
                 response.Message = apiEx.Message;
+                break;
+            case ServiceException serviceEx:
+                context.Response.StatusCode = serviceEx.StatusCode;
+                response.Message = serviceEx.Message;
+                response.Errors = serviceEx.Errors;
                 break;
             // Catch FluentValidation errors later here
             default:

@@ -30,3 +30,6 @@ bld/
 # Environment
 .env
 appsettings.Development.json
+
+# Local documentation
+docs/
