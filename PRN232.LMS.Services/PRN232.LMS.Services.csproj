@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="16.1.1" />
     <ProjectReference Include="..\PRN232.LMS.Repositories\PRN232.LMS.Repositories.csproj" />
   </ItemGroup>
 
