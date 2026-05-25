@@ -1,0 +1,15 @@
+meta {
+  name: Get Students
+  type: http
+  seq: 1
+}
+
+get {
+  url: http://localhost:8080/api/students?page=1&size=10
+  body: none
+  auth: none
+}
+
+headers {
+  Accept: application/json
+}
