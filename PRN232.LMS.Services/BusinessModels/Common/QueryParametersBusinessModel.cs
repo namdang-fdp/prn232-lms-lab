@@ -1,6 +1,6 @@
-namespace PRN232.LMS.Services.Models.Common;
+namespace PRN232.LMS.Services.BusinessModels.Common;
 
-public class QueryParametersModel
+public class QueryParametersBusinessModel
 {
     public string? Search { get; set; }
     public string? Sort { get; set; }

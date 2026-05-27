@@ -1,8 +1,8 @@
 using AutoMapper;
 using PRN232.LMS.API.Models.Requests;
 using PRN232.LMS.API.Models.Responses;
-using PRN232.LMS.Services.Models;
-using PRN232.LMS.Services.Models.Common;
+using PRN232.LMS.Services.BusinessModels;
+using PRN232.LMS.Services.BusinessModels.Common;
 
 namespace PRN232.LMS.API.Mapping;
 
@@ -10,31 +10,31 @@ public class ApiMappingProfile : Profile
 {
     public ApiMappingProfile()
     {
-        CreateMap<QueryRequest, QueryParametersModel>();
+        CreateMap<QueryRequest, QueryParametersBusinessModel>();
 
-        CreateMap<CreateSemesterRequest, SemesterModel>();
-        CreateMap<UpdateSemesterRequest, SemesterModel>();
-        CreateMap<SemesterSummaryModel, SemesterSummaryResponse>();
-        CreateMap<SemesterModel, SemesterResponse>();
+        CreateMap<CreateSemesterRequest, SemesterBusinessModel>();
+        CreateMap<UpdateSemesterRequest, SemesterBusinessModel>();
+        CreateMap<SemesterSummaryBusinessModel, SemesterSummaryResponse>();
+        CreateMap<SemesterBusinessModel, SemesterResponse>();
 
-        CreateMap<CreateSubjectRequest, SubjectModel>();
-        CreateMap<UpdateSubjectRequest, SubjectModel>();
-        CreateMap<SubjectSummaryModel, SubjectSummaryResponse>();
-        CreateMap<SubjectModel, SubjectResponse>();
+        CreateMap<CreateSubjectRequest, SubjectBusinessModel>();
+        CreateMap<UpdateSubjectRequest, SubjectBusinessModel>();
+        CreateMap<SubjectSummaryBusinessModel, SubjectSummaryResponse>();
+        CreateMap<SubjectBusinessModel, SubjectResponse>();
 
-        CreateMap<CreateCourseRequest, CourseModel>();
-        CreateMap<UpdateCourseRequest, CourseModel>();
-        CreateMap<CourseSummaryModel, CourseSummaryResponse>();
-        CreateMap<CourseModel, CourseResponse>();
+        CreateMap<CreateCourseRequest, CourseBusinessModel>();
+        CreateMap<UpdateCourseRequest, CourseBusinessModel>();
+        CreateMap<CourseSummaryBusinessModel, CourseSummaryResponse>();
+        CreateMap<CourseBusinessModel, CourseResponse>();
 
-        CreateMap<CreateStudentRequest, StudentModel>();
-        CreateMap<UpdateStudentRequest, StudentModel>();
-        CreateMap<StudentSummaryModel, StudentSummaryResponse>();
-        CreateMap<StudentModel, StudentResponse>();
+        CreateMap<CreateStudentRequest, StudentBusinessModel>();
+        CreateMap<UpdateStudentRequest, StudentBusinessModel>();
+        CreateMap<StudentSummaryBusinessModel, StudentSummaryResponse>();
+        CreateMap<StudentBusinessModel, StudentResponse>();
 
-        CreateMap<CreateEnrollmentRequest, EnrollmentModel>();
-        CreateMap<UpdateEnrollmentRequest, EnrollmentModel>();
-        CreateMap<EnrollmentSummaryModel, EnrollmentSummaryResponse>();
-        CreateMap<EnrollmentModel, EnrollmentResponse>();
+        CreateMap<CreateEnrollmentRequest, EnrollmentBusinessModel>();
+        CreateMap<UpdateEnrollmentRequest, EnrollmentBusinessModel>();
+        CreateMap<EnrollmentSummaryBusinessModel, EnrollmentSummaryResponse>();
+        CreateMap<EnrollmentBusinessModel, EnrollmentResponse>();
     }
 }

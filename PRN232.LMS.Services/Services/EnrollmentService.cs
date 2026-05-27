@@ -2,8 +2,8 @@ using AutoMapper;
 using PRN232.LMS.Repositories.Entities;
 using PRN232.LMS.Repositories.Query;
 using PRN232.LMS.Repositories.Repositories;
-using PRN232.LMS.Services.Models;
-using PRN232.LMS.Services.Models.Common;
+using PRN232.LMS.Services.BusinessModels;
+using PRN232.LMS.Services.BusinessModels.Common;
 
 namespace PRN232.LMS.Services.Services;
 
@@ -21,18 +21,18 @@ public class EnrollmentService(
         "Pending"
     };
 
-    public async Task<PagedResultModel<EnrollmentModel>> GetAsync(
-        QueryParametersModel query,
+    public async Task<PagedResultBusinessModel<EnrollmentBusinessModel>> GetAsync(
+        QueryParametersBusinessModel query,
         CancellationToken cancellationToken = default)
     {
         var result = await enrollmentRepository.GetPagedAsync(
             LmsQueryConfigurations.ForEnrollments(query.Search, query.Sort, query.Expand, Page(query), Size(query)),
             cancellationToken);
 
-        return ToPagedResult<Enrollment, EnrollmentModel>(result);
+        return ToPagedResult<Enrollment, EnrollmentBusinessModel>(result);
     }
 
-    public async Task<EnrollmentModel> GetByIdAsync(int id, CancellationToken cancellationToken = default)
+    public async Task<EnrollmentBusinessModel> GetByIdAsync(int id, CancellationToken cancellationToken = default)
     {
         var enrollment = await enrollmentRepository.GetByIdAsync(
             entity => entity.EnrollmentId == id,
@@ -41,10 +41,10 @@ public class EnrollmentService(
 
         return enrollment is null
             ? throw NotFound("Enrollment", id)
-            : Mapper.Map<EnrollmentModel>(enrollment);
+            : Mapper.Map<EnrollmentBusinessModel>(enrollment);
     }
 
-    public async Task<EnrollmentModel> CreateAsync(EnrollmentModel model, CancellationToken cancellationToken = default)
+    public async Task<EnrollmentBusinessModel> CreateAsync(EnrollmentBusinessModel model, CancellationToken cancellationToken = default)
     {
         await ValidateEnrollmentAsync(model, null, cancellationToken);
 
@@ -56,9 +56,9 @@ public class EnrollmentService(
         return await GetByIdAsync(enrollment.EnrollmentId, cancellationToken);
     }
 
-    public async Task<EnrollmentModel> UpdateAsync(
+    public async Task<EnrollmentBusinessModel> UpdateAsync(
         int id,
-        EnrollmentModel model,
+        EnrollmentBusinessModel model,
         CancellationToken cancellationToken = default)
     {
         var enrollment = await enrollmentRepository.GetByIdAsync(
@@ -100,7 +100,7 @@ public class EnrollmentService(
     }
 
     private async Task ValidateEnrollmentAsync(
-        EnrollmentModel model,
+        EnrollmentBusinessModel model,
         int? existingId,
         CancellationToken cancellationToken)
     {

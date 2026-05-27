@@ -4,8 +4,8 @@ using PRN232.LMS.API.Common.Response;
 using PRN232.LMS.API.Models.Requests;
 using PRN232.LMS.API.Models.Responses;
 using PRN232.LMS.Services.Exceptions;
-using PRN232.LMS.Services.Models;
-using PRN232.LMS.Services.Models.Common;
+using PRN232.LMS.Services.BusinessModels;
+using PRN232.LMS.Services.BusinessModels.Common;
 using PRN232.LMS.Services.Services;
 
 namespace PRN232.LMS.API.Controllers;
@@ -26,10 +26,10 @@ public class StudentsController(IStudentService studentService, IMapper mapper) 
         [FromQuery] QueryRequest request,
         CancellationToken cancellationToken)
     {
-        var query = mapper.Map<QueryParametersModel>(request);
+        var query = mapper.Map<QueryParametersBusinessModel>(request);
         var result = await studentService.GetAsync(query, cancellationToken);
         var responses = mapper.Map<IReadOnlyList<StudentResponse>>(result.Items);
-        var page = ToPageResponse<StudentResponse, StudentModel>(result, responses, request.Fields);
+        var page = ToPageResponse<StudentResponse, StudentBusinessModel>(result, responses, request.Fields);
 
         return Ok(new ApiResponse<PageResponse<object>>(page, "Students retrieved successfully."));
     }
@@ -69,7 +69,7 @@ public class StudentsController(IStudentService studentService, IMapper mapper) 
         [FromBody] CreateStudentRequest request,
         CancellationToken cancellationToken)
     {
-        var model = mapper.Map<StudentModel>(request);
+        var model = mapper.Map<StudentBusinessModel>(request);
         var created = await studentService.CreateAsync(model, cancellationToken);
         var response = mapper.Map<StudentResponse>(created);
 
@@ -92,7 +92,7 @@ public class StudentsController(IStudentService studentService, IMapper mapper) 
         [FromBody] UpdateStudentRequest request,
         CancellationToken cancellationToken)
     {
-        var model = mapper.Map<StudentModel>(request);
+        var model = mapper.Map<StudentBusinessModel>(request);
         var updated = await studentService.UpdateAsync(id, model, cancellationToken);
         var response = mapper.Map<StudentResponse>(updated);
 

@@ -4,8 +4,8 @@ using PRN232.LMS.API.Common.Response;
 using PRN232.LMS.API.Models.Requests;
 using PRN232.LMS.API.Models.Responses;
 using PRN232.LMS.Services.Exceptions;
-using PRN232.LMS.Services.Models;
-using PRN232.LMS.Services.Models.Common;
+using PRN232.LMS.Services.BusinessModels;
+using PRN232.LMS.Services.BusinessModels.Common;
 using PRN232.LMS.Services.Services;
 
 namespace PRN232.LMS.API.Controllers;
@@ -26,10 +26,10 @@ public class SubjectsController(ISubjectService subjectService, IMapper mapper) 
         [FromQuery] QueryRequest request,
         CancellationToken cancellationToken)
     {
-        var query = mapper.Map<QueryParametersModel>(request);
+        var query = mapper.Map<QueryParametersBusinessModel>(request);
         var result = await subjectService.GetAsync(query, cancellationToken);
         var responses = mapper.Map<IReadOnlyList<SubjectResponse>>(result.Items);
-        var page = ToPageResponse<SubjectResponse, SubjectModel>(result, responses, request.Fields);
+        var page = ToPageResponse<SubjectResponse, SubjectBusinessModel>(result, responses, request.Fields);
 
         return Ok(new ApiResponse<PageResponse<object>>(page, "Subjects retrieved successfully."));
     }
@@ -69,7 +69,7 @@ public class SubjectsController(ISubjectService subjectService, IMapper mapper) 
         [FromBody] CreateSubjectRequest request,
         CancellationToken cancellationToken)
     {
-        var model = mapper.Map<SubjectModel>(request);
+        var model = mapper.Map<SubjectBusinessModel>(request);
         var created = await subjectService.CreateAsync(model, cancellationToken);
         var response = mapper.Map<SubjectResponse>(created);
 
@@ -92,7 +92,7 @@ public class SubjectsController(ISubjectService subjectService, IMapper mapper) 
         [FromBody] UpdateSubjectRequest request,
         CancellationToken cancellationToken)
     {
-        var model = mapper.Map<SubjectModel>(request);
+        var model = mapper.Map<SubjectBusinessModel>(request);
         var updated = await subjectService.UpdateAsync(id, model, cancellationToken);
         var response = mapper.Map<SubjectResponse>(updated);
 

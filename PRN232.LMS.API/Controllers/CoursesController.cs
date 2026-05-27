@@ -4,8 +4,8 @@ using PRN232.LMS.API.Common.Response;
 using PRN232.LMS.API.Models.Requests;
 using PRN232.LMS.API.Models.Responses;
 using PRN232.LMS.Services.Exceptions;
-using PRN232.LMS.Services.Models;
-using PRN232.LMS.Services.Models.Common;
+using PRN232.LMS.Services.BusinessModels;
+using PRN232.LMS.Services.BusinessModels.Common;
 using PRN232.LMS.Services.Services;
 
 namespace PRN232.LMS.API.Controllers;
@@ -26,10 +26,10 @@ public class CoursesController(ICourseService courseService, IMapper mapper) : L
         [FromQuery] QueryRequest request,
         CancellationToken cancellationToken)
     {
-        var query = mapper.Map<QueryParametersModel>(request);
+        var query = mapper.Map<QueryParametersBusinessModel>(request);
         var result = await courseService.GetAsync(query, cancellationToken);
         var responses = mapper.Map<IReadOnlyList<CourseResponse>>(result.Items);
-        var page = ToPageResponse<CourseResponse, CourseModel>(result, responses, request.Fields);
+        var page = ToPageResponse<CourseResponse, CourseBusinessModel>(result, responses, request.Fields);
 
         return Ok(new ApiResponse<PageResponse<object>>(page, "Courses retrieved successfully."));
     }
@@ -59,6 +59,35 @@ public class CoursesController(ICourseService courseService, IMapper mapper) : L
     }
 
     /// <summary>
+    /// Gets a paged list of enrollments for a course.
+    /// </summary>
+    /// <remarks>Supports search, sort, paging, field selection, and relationship expansion.</remarks>
+    [HttpGet("{id:int}/enrollments")]
+    [ProducesResponseType(typeof(ApiResponse<PageResponse<object>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<ApiResponse<PageResponse<object>>>> GetEnrollmentsByCourse(
+        int id,
+        [FromQuery] QueryRequest request,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            var query = mapper.Map<QueryParametersBusinessModel>(request);
+            var result = await courseService.GetEnrollmentsAsync(id, query, cancellationToken);
+            var responses = mapper.Map<IReadOnlyList<EnrollmentResponse>>(result.Items);
+            var page = ToPageResponse<EnrollmentResponse, EnrollmentBusinessModel>(result, responses, request.Fields);
+
+            return Ok(new ApiResponse<PageResponse<object>>(page, "Course enrollments retrieved successfully."));
+        }
+        catch (ServiceException exception) when (exception.StatusCode == StatusCodes.Status404NotFound)
+        {
+            return NotFoundResponse(exception);
+        }
+    }
+
+    /// <summary>
     /// Creates a course.
     /// </summary>
     [HttpPost]
@@ -69,7 +98,7 @@ public class CoursesController(ICourseService courseService, IMapper mapper) : L
         [FromBody] CreateCourseRequest request,
         CancellationToken cancellationToken)
     {
-        var model = mapper.Map<CourseModel>(request);
+        var model = mapper.Map<CourseBusinessModel>(request);
         var created = await courseService.CreateAsync(model, cancellationToken);
         var response = mapper.Map<CourseResponse>(created);
 
@@ -92,7 +121,7 @@ public class CoursesController(ICourseService courseService, IMapper mapper) : L
         [FromBody] UpdateCourseRequest request,
         CancellationToken cancellationToken)
     {
-        var model = mapper.Map<CourseModel>(request);
+        var model = mapper.Map<CourseBusinessModel>(request);
         var updated = await courseService.UpdateAsync(id, model, cancellationToken);
         var response = mapper.Map<CourseResponse>(updated);
 

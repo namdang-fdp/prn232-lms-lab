@@ -2,8 +2,8 @@ using AutoMapper;
 using PRN232.LMS.Repositories.Entities;
 using PRN232.LMS.Repositories.Query;
 using PRN232.LMS.Repositories.Repositories;
-using PRN232.LMS.Services.Models;
-using PRN232.LMS.Services.Models.Common;
+using PRN232.LMS.Services.BusinessModels;
+using PRN232.LMS.Services.BusinessModels.Common;
 
 namespace PRN232.LMS.Services.Services;
 
@@ -12,18 +12,18 @@ public class SemesterService(
     IGenericRepository<Course> courseRepository,
     IMapper mapper) : LmsServiceBase(mapper), ISemesterService
 {
-    public async Task<PagedResultModel<SemesterModel>> GetAsync(
-        QueryParametersModel query,
+    public async Task<PagedResultBusinessModel<SemesterBusinessModel>> GetAsync(
+        QueryParametersBusinessModel query,
         CancellationToken cancellationToken = default)
     {
         var result = await semesterRepository.GetPagedAsync(
             LmsQueryConfigurations.ForSemesters(query.Search, query.Sort, query.Expand, Page(query), Size(query)),
             cancellationToken);
 
-        return ToPagedResult<Semester, SemesterModel>(result);
+        return ToPagedResult<Semester, SemesterBusinessModel>(result);
     }
 
-    public async Task<SemesterModel> GetByIdAsync(int id, CancellationToken cancellationToken = default)
+    public async Task<SemesterBusinessModel> GetByIdAsync(int id, CancellationToken cancellationToken = default)
     {
         var semester = await semesterRepository.GetByIdAsync(
             entity => entity.SemesterId == id,
@@ -32,10 +32,10 @@ public class SemesterService(
 
         return semester is null
             ? throw NotFound("Semester", id)
-            : Mapper.Map<SemesterModel>(semester);
+            : Mapper.Map<SemesterBusinessModel>(semester);
     }
 
-    public async Task<SemesterModel> CreateAsync(SemesterModel model, CancellationToken cancellationToken = default)
+    public async Task<SemesterBusinessModel> CreateAsync(SemesterBusinessModel model, CancellationToken cancellationToken = default)
     {
         await ValidateSemesterAsync(model, null, cancellationToken);
 
@@ -47,9 +47,9 @@ public class SemesterService(
         return await GetByIdAsync(semester.SemesterId, cancellationToken);
     }
 
-    public async Task<SemesterModel> UpdateAsync(
+    public async Task<SemesterBusinessModel> UpdateAsync(
         int id,
-        SemesterModel model,
+        SemesterBusinessModel model,
         CancellationToken cancellationToken = default)
     {
         var semester = await semesterRepository.GetByIdAsync(
@@ -95,7 +95,7 @@ public class SemesterService(
     }
 
     private async Task ValidateSemesterAsync(
-        SemesterModel model,
+        SemesterBusinessModel model,
         int? existingId,
         CancellationToken cancellationToken)
     {

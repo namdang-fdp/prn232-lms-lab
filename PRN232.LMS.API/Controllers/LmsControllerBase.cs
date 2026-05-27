@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using PRN232.LMS.API.Common.Response;
 using PRN232.LMS.API.Extensions;
 using PRN232.LMS.Services.Exceptions;
-using PRN232.LMS.Services.Models.Common;
+using PRN232.LMS.Services.BusinessModels.Common;
 
 namespace PRN232.LMS.API.Controllers;
 
@@ -20,8 +20,8 @@ public abstract class LmsControllerBase : ControllerBase
         });
     }
 
-    protected static PageResponse<object> ToPageResponse<TResponse, TModel>(
-        PagedResultModel<TModel> result,
+    protected static PageResponse<object> ToPageResponse<TResponse, TBusinessModel>(
+        PagedResultBusinessModel<TBusinessModel> result,
         IEnumerable<TResponse> responses,
         string? fields)
     {

@@ -2,8 +2,8 @@ using AutoMapper;
 using PRN232.LMS.Repositories.Entities;
 using PRN232.LMS.Repositories.Query;
 using PRN232.LMS.Repositories.Repositories;
-using PRN232.LMS.Services.Models;
-using PRN232.LMS.Services.Models.Common;
+using PRN232.LMS.Services.BusinessModels;
+using PRN232.LMS.Services.BusinessModels.Common;
 
 namespace PRN232.LMS.Services.Services;
 
@@ -12,18 +12,18 @@ public class StudentService(
     IGenericRepository<Enrollment> enrollmentRepository,
     IMapper mapper) : LmsServiceBase(mapper), IStudentService
 {
-    public async Task<PagedResultModel<StudentModel>> GetAsync(
-        QueryParametersModel query,
+    public async Task<PagedResultBusinessModel<StudentBusinessModel>> GetAsync(
+        QueryParametersBusinessModel query,
         CancellationToken cancellationToken = default)
     {
         var result = await studentRepository.GetPagedAsync(
             LmsQueryConfigurations.ForStudents(query.Search, query.Sort, query.Expand, Page(query), Size(query)),
             cancellationToken);
 
-        return ToPagedResult<Student, StudentModel>(result);
+        return ToPagedResult<Student, StudentBusinessModel>(result);
     }
 
-    public async Task<StudentModel> GetByIdAsync(int id, CancellationToken cancellationToken = default)
+    public async Task<StudentBusinessModel> GetByIdAsync(int id, CancellationToken cancellationToken = default)
     {
         var student = await studentRepository.GetByIdAsync(
             entity => entity.StudentId == id,
@@ -32,10 +32,10 @@ public class StudentService(
 
         return student is null
             ? throw NotFound("Student", id)
-            : Mapper.Map<StudentModel>(student);
+            : Mapper.Map<StudentBusinessModel>(student);
     }
 
-    public async Task<StudentModel> CreateAsync(StudentModel model, CancellationToken cancellationToken = default)
+    public async Task<StudentBusinessModel> CreateAsync(StudentBusinessModel model, CancellationToken cancellationToken = default)
     {
         await ValidateStudentAsync(model, null, cancellationToken);
 
@@ -47,9 +47,9 @@ public class StudentService(
         return await GetByIdAsync(student.StudentId, cancellationToken);
     }
 
-    public async Task<StudentModel> UpdateAsync(
+    public async Task<StudentBusinessModel> UpdateAsync(
         int id,
-        StudentModel model,
+        StudentBusinessModel model,
         CancellationToken cancellationToken = default)
     {
         var student = await studentRepository.GetByIdAsync(
@@ -95,7 +95,7 @@ public class StudentService(
     }
 
     private async Task ValidateStudentAsync(
-        StudentModel model,
+        StudentBusinessModel model,
         int? existingId,
         CancellationToken cancellationToken)
     {

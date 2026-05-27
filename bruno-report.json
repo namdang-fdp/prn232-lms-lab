@@ -1,0 +1,2505 @@
+[
+  {
+    "iterationIndex": 0,
+    "results": [
+      {
+        "test": {
+          "filename": "Courses/Create Valid.bru"
+        },
+        "request": {
+          "method": "POST",
+          "url": "http://localhost:8080/api/courses",
+          "headers": {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+          },
+          "data": "{\n  \"courseName\": \"E2E Course 1779690645849\",\n  \"semesterId\": 1,\n  \"subjectId\": 1\n}"
+        },
+        "response": {
+          "status": 201,
+          "statusText": "Created",
+          "headers": {
+            "content-type": "application/json; charset=utf-8",
+            "date": "Mon, 25 May 2026 06:30:45 GMT",
+            "server": "Kestrel",
+            "location": "http://localhost:8080/api/courses/22",
+            "transfer-encoding": "chunked"
+          },
+          "data": {
+            "success": true,
+            "message": "Course created successfully.",
+            "data": {
+              "enrollments": [],
+              "courseId": 22,
+              "courseName": "E2E Course 1779690645849",
+              "semesterId": 1,
+              "subjectId": 1,
+              "semester": {
+                "semesterId": 1,
+                "semesterName": "Spring 2024",
+                "startDate": "2024-01-08",
+                "endDate": "2024-05-12"
+              },
+              "subject": {
+                "subjectId": 1,
+                "subjectCode": "PRN232",
+                "subjectName": "Advanced Cross-Platform Application Programming",
+                "credit": 3
+              }
+            }
+          },
+          "url": "http://localhost/api/courses",
+          "responseTime": 453,
+          "duration": 453,
+          "size": 395
+        },
+        "error": null,
+        "status": "pass",
+        "assertionResults": [],
+        "testResults": [
+          {
+            "description": "returns ApiResponse success with created course",
+            "status": "pass",
+            "uid": "JuBzS86gKGQ3lq9xtnCDi"
+          }
+        ],
+        "preRequestTestResults": [],
+        "postResponseTestResults": [],
+        "shouldStopRunnerExecution": false,
+        "runDuration": 0.659511776,
+        "name": "Create Valid",
+        "path": "Courses/Create Valid",
+        "iterationIndex": 0
+      },
+      {
+        "test": {
+          "filename": "Courses/Create Invalid.bru"
+        },
+        "request": {
+          "method": "POST",
+          "url": "http://localhost:8080/api/courses",
+          "headers": {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+          },
+          "data": "{\n  \"courseName\": \"\",\n  \"semesterId\": 99999,\n  \"subjectId\": 99999\n}"
+        },
+        "response": {
+          "status": 400,
+          "statusText": "Bad Request",
+          "headers": {
+            "content-type": "application/json",
+            "date": "Mon, 25 May 2026 06:30:45 GMT",
+            "server": "Kestrel",
+            "transfer-encoding": "chunked"
+          },
+          "data": {
+            "success": false,
+            "message": "Course name is required.",
+            "data": null,
+            "errors": {
+              "CourseName": "Course name is required."
+            }
+          },
+          "url": "http://localhost/api/courses",
+          "responseTime": 39,
+          "duration": 39,
+          "size": 117
+        },
+        "error": null,
+        "status": "pass",
+        "assertionResults": [],
+        "testResults": [
+          {
+            "description": "returns ApiResponse validation error",
+            "status": "pass",
+            "uid": "Ugk83SrzdnflAtEbiNSz_"
+          }
+        ],
+        "preRequestTestResults": [],
+        "postResponseTestResults": [],
+        "shouldStopRunnerExecution": false,
+        "runDuration": 0.086677484,
+        "name": "Create Invalid",
+        "path": "Courses/Create Invalid",
+        "iterationIndex": 0
+      },
+      {
+        "test": {
+          "filename": "Courses/Get By ID Valid.bru"
+        },
+        "request": {
+          "method": "GET",
+          "url": "http://localhost:8080/api/courses/22",
+          "headers": {
+            "Accept": "application/json",
+            "content-type": null
+          }
+        },
+        "response": {
+          "status": 200,
+          "statusText": "OK",
+          "headers": {
+            "content-type": "application/json; charset=utf-8",
+            "date": "Mon, 25 May 2026 06:30:45 GMT",
+            "server": "Kestrel",
+            "transfer-encoding": "chunked"
+          },
+          "data": {
+            "success": true,
+            "message": "Course retrieved successfully.",
+            "data": {
+              "enrollments": [],
+              "courseId": 22,
+              "courseName": "E2E Course 1779690645849",
+              "semesterId": 1,
+              "subjectId": 1,
+              "semester": {
+                "semesterId": 1,
+                "semesterName": "Spring 2024",
+                "startDate": "2024-01-08",
+                "endDate": "2024-05-12"
+              },
+              "subject": {
+                "subjectId": 1,
+                "subjectCode": "PRN232",
+                "subjectName": "Advanced Cross-Platform Application Programming",
+                "credit": 3
+              }
+            }
+          },
+          "url": "http://localhost/api/courses/22",
+          "responseTime": 17,
+          "duration": 17,
+          "size": 397
+        },
+        "error": null,
+        "status": "pass",
+        "assertionResults": [],
+        "testResults": [
+          {
+            "description": "returns ApiResponse success with course",
+            "status": "pass",
+            "uid": "r-tdXoAMb78MsdJpPOiQQ"
+          }
+        ],
+        "preRequestTestResults": [],
+        "postResponseTestResults": [],
+        "shouldStopRunnerExecution": false,
+        "runDuration": 0.068248084,
+        "name": "Get By ID Valid",
+        "path": "Courses/Get By ID Valid",
+        "iterationIndex": 0
+      },
+      {
+        "test": {
+          "filename": "Courses/Get By ID Not Found.bru"
+        },
+        "request": {
+          "method": "GET",
+          "url": "http://localhost:8080/api/courses/99999",
+          "headers": {
+            "Accept": "application/json",
+            "content-type": null
+          }
+        },
+        "response": {
+          "status": 404,
+          "statusText": "Not Found",
+          "headers": {
+            "content-type": "application/json",
+            "date": "Mon, 25 May 2026 06:30:45 GMT",
+            "server": "Kestrel",
+            "transfer-encoding": "chunked"
+          },
+          "data": {
+            "success": false,
+            "message": "Course with id 99999 was not found.",
+            "data": null,
+            "errors": null
+          },
+          "url": "http://localhost/api/courses/99999",
+          "responseTime": 9,
+          "duration": 9,
+          "size": 91
+        },
+        "error": null,
+        "status": "pass",
+        "assertionResults": [],
+        "testResults": [
+          {
+            "description": "returns ApiResponse not found",
+            "status": "pass",
+            "uid": "4qBcdxWeocDzl4bYhP5GU"
+          }
+        ],
+        "preRequestTestResults": [],
+        "postResponseTestResults": [],
+        "shouldStopRunnerExecution": false,
+        "runDuration": 0.057254443,
+        "name": "Get By ID Not Found",
+        "path": "Courses/Get By ID Not Found",
+        "iterationIndex": 0
+      },
+      {
+        "test": {
+          "filename": "Courses/Update.bru"
+        },
+        "request": {
+          "method": "PUT",
+          "url": "http://localhost:8080/api/courses/22",
+          "headers": {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+          },
+          "data": "{\n  \"courseName\": \"E2E Course Updated 1779690645849\",\n  \"semesterId\": 2,\n  \"subjectId\": 2\n}"
+        },
+        "response": {
+          "status": 200,
+          "statusText": "OK",
+          "headers": {
+            "content-type": "application/json; charset=utf-8",
+            "date": "Mon, 25 May 2026 06:30:45 GMT",
+            "server": "Kestrel",
+            "transfer-encoding": "chunked"
+          },
+          "data": {
+            "success": true,
+            "message": "Course updated successfully.",
+            "data": {
+              "enrollments": [],
+              "courseId": 22,
+              "courseName": "E2E Course Updated 1779690645849",
+              "semesterId": 2,
+              "subjectId": 2,
+              "semester": {
+                "semesterId": 2,
+                "semesterName": "Summer 2024",
+                "startDate": "2024-05-20",
+                "endDate": "2024-08-25"
+              },
+              "subject": {
+                "subjectId": 2,
+                "subjectCode": "PRO192",
+                "subjectName": "Object-Oriented Programming",
+                "credit": 3
+              }
+            }
+          },
+          "url": "http://localhost/api/courses/22",
+          "responseTime": 25,
+          "duration": 25,
+          "size": 383
+        },
+        "error": null,
+        "status": "pass",
+        "assertionResults": [],
+        "testResults": [
+          {
+            "description": "returns ApiResponse success with updated course",
+            "status": "pass",
+            "uid": "871GH3lf0jpSUsxRq4j3f"
+          }
+        ],
+        "preRequestTestResults": [],
+        "postResponseTestResults": [],
+        "shouldStopRunnerExecution": false,
+        "runDuration": 0.073466131,
+        "name": "Update",
+        "path": "Courses/Update",
+        "iterationIndex": 0
+      },
+      {
+        "test": {
+          "filename": "Courses/Delete.bru"
+        },
+        "request": {
+          "method": "DELETE",
+          "url": "http://localhost:8080/api/courses/22",
+          "headers": {
+            "Accept": "application/json",
+            "content-type": null
+          }
+        },
+        "response": {
+          "status": 200,
+          "statusText": "OK",
+          "headers": {
+            "content-type": "application/json; charset=utf-8",
+            "date": "Mon, 25 May 2026 06:30:45 GMT",
+            "server": "Kestrel",
+            "transfer-encoding": "chunked"
+          },
+          "data": {
+            "success": true,
+            "message": "Course deleted successfully."
+          },
+          "url": "http://localhost/api/courses/22",
+          "responseTime": 34,
+          "duration": 34,
+          "size": 57
+        },
+        "error": null,
+        "status": "pass",
+        "assertionResults": [],
+        "testResults": [
+          {
+            "description": "returns ApiResponse success for delete",
+            "status": "pass",
+            "uid": "8-7QjJu9D3GqFhW3MHImB"
+          }
+        ],
+        "preRequestTestResults": [],
+        "postResponseTestResults": [],
+        "shouldStopRunnerExecution": false,
+        "runDuration": 0.080896291,
+        "name": "Delete",
+        "path": "Courses/Delete",
+        "iterationIndex": 0
+      },
+      {
+        "test": {
+          "filename": "Courses/Get List Advanced.bru"
+        },
+        "request": {
+          "method": "GET",
+          "url": "http://localhost:8080/api/courses?search=Course&sort=-courseName&page=1&size=5&fields=courseId,courseName,semesterId,subjectId",
+          "headers": {
+            "Accept": "application/json",
+            "content-type": null
+          }
+        },
+        "response": {
+          "status": 200,
+          "statusText": "OK",
+          "headers": {
+            "content-type": "application/json; charset=utf-8",
+            "date": "Mon, 25 May 2026 06:30:46 GMT",
+            "server": "Kestrel",
+            "transfer-encoding": "chunked"
+          },
+          "data": {
+            "success": true,
+            "message": "Courses retrieved successfully.",
+            "data": {
+              "content": [
+                {
+                  "courseId": 21,
+                  "courseName": "Manual Test Course",
+                  "semesterId": 1,
+                  "subjectId": 1
+                },
+                {
+                  "courseId": 20,
+                  "courseName": "Course 20 - Section B",
+                  "semesterId": 5,
+                  "subjectId": 10
+                },
+                {
+                  "courseId": 19,
+                  "courseName": "Course 19 - Section B",
+                  "semesterId": 4,
+                  "subjectId": 9
+                },
+                {
+                  "courseId": 18,
+                  "courseName": "Course 18 - Section B",
+                  "semesterId": 3,
+                  "subjectId": 8
+                },
+                {
+                  "courseId": 17,
+                  "courseName": "Course 17 - Section B",
+                  "semesterId": 2,
+                  "subjectId": 7
+                }
+              ],
+              "pagination": {
+                "page": 1,
+                "pageSize": 5,
+                "totalItems": 21,
+                "totalPages": 5
+              }
+            }
+          },
+          "url": "http://localhost/api/courses?search=Course&sort=-courseName&page=1&size=5&fields=courseId,courseName,semesterId,subjectId",
+          "responseTime": 65,
+          "duration": 65,
+          "size": 557
+        },
+        "error": null,
+        "status": "pass",
+        "assertionResults": [],
+        "testResults": [
+          {
+            "description": "returns paged ApiResponse for advanced list query",
+            "status": "pass",
+            "uid": "owYeXZeUIcY67pCG0-zvw"
+          }
+        ],
+        "preRequestTestResults": [],
+        "postResponseTestResults": [],
+        "shouldStopRunnerExecution": false,
+        "runDuration": 0.111723826,
+        "name": "Get List Advanced",
+        "path": "Courses/Get List Advanced",
+        "iterationIndex": 0
+      },
+      {
+        "test": {
+          "filename": "Courses/Get List with Expand.bru"
+        },
+        "request": {
+          "method": "GET",
+          "url": "http://localhost:8080/api/courses?expand=semester,subject&page=1&size=5",
+          "headers": {
+            "Accept": "application/json",
+            "content-type": null
+          }
+        },
+        "response": {
+          "status": 200,
+          "statusText": "OK",
+          "headers": {
+            "content-type": "application/json; charset=utf-8",
+            "date": "Mon, 25 May 2026 06:30:46 GMT",
+            "server": "Kestrel",
+            "transfer-encoding": "chunked"
+          },
+          "data": {
+            "success": true,
+            "message": "Courses retrieved successfully.",
+            "data": {
+              "content": [
+                {
+                  "enrollments": [],
+                  "courseId": 1,
+                  "courseName": "Course 01 - Section A",
+                  "semesterId": 1,
+                  "subjectId": 1,
+                  "semester": {
+                    "semesterId": 1,
+                    "semesterName": "Spring 2024",
+                    "startDate": "2024-01-08",
+                    "endDate": "2024-05-12"
+                  },
+                  "subject": {
+                    "subjectId": 1,
+                    "subjectCode": "PRN232",
+                    "subjectName": "Advanced Cross-Platform Application Programming",
+                    "credit": 3
+                  }
+                },
+                {
+                  "enrollments": [],
+                  "courseId": 2,
+                  "courseName": "Course 02 - Section A",
+                  "semesterId": 2,
+                  "subjectId": 2,
+                  "semester": {
+                    "semesterId": 2,
+                    "semesterName": "Summer 2024",
+                    "startDate": "2024-05-20",
+                    "endDate": "2024-08-25"
+                  },
+                  "subject": {
+                    "subjectId": 2,
+                    "subjectCode": "PRO192",
+                    "subjectName": "Object-Oriented Programming",
+                    "credit": 3
+                  }
+                },
+                {
+                  "enrollments": [],
+                  "courseId": 3,
+                  "courseName": "Course 03 - Section A",
+                  "semesterId": 3,
+                  "subjectId": 3,
+                  "semester": {
+                    "semesterId": 3,
+                    "semesterName": "Fall 2024",
+                    "startDate": "2024-09-02",
+                    "endDate": "2024-12-22"
+                  },
+                  "subject": {
+                    "subjectId": 3,
+                    "subjectCode": "DBI202",
+                    "subjectName": "Database Systems",
+                    "credit": 3
+                  }
+                },
+                {
+                  "enrollments": [],
+                  "courseId": 4,
+                  "courseName": "Course 04 - Section A",
+                  "semesterId": 4,
+                  "subjectId": 4,
+                  "semester": {
+                    "semesterId": 4,
+                    "semesterName": "Spring 2025",
+                    "startDate": "2025-01-06",
+                    "endDate": "2025-05-11"
+                  },
+                  "subject": {
+                    "subjectId": 4,
+                    "subjectCode": "SWE201",
+                    "subjectName": "Introduction to Software Engineering",
+                    "credit": 3
+                  }
+                },
+                {
+                  "enrollments": [],
+                  "courseId": 5,
+                  "courseName": "Course 05 - Section A",
+                  "semesterId": 5,
+                  "subjectId": 5,
+                  "semester": {
+                    "semesterId": 5,
+                    "semesterName": "Summer 2025",
+                    "startDate": "2025-05-19",
+                    "endDate": "2025-08-24"
+                  },
+                  "subject": {
+                    "subjectId": 5,
+                    "subjectCode": "CSD201",
+                    "subjectName": "Data Structures and Algorithms",
+                    "credit": 3
+                  }
+                }
+              ],
+              "pagination": {
+                "page": 1,
+                "pageSize": 5,
+                "totalItems": 21,
+                "totalPages": 5
+              }
+            }
+          },
+          "url": "http://localhost/api/courses?expand=semester,subject&page=1&size=5",
+          "responseTime": 15,
+          "duration": 15,
+          "size": 1703
+        },
+        "error": null,
+        "status": "pass",
+        "assertionResults": [],
+        "testResults": [
+          {
+            "description": "returns expanded course relationships",
+            "status": "pass",
+            "uid": "jjPznjbi8PtmSKUU1PQ3Q"
+          }
+        ],
+        "preRequestTestResults": [],
+        "postResponseTestResults": [],
+        "shouldStopRunnerExecution": false,
+        "runDuration": 0.059827083,
+        "name": "Get List with Expand",
+        "path": "Courses/Get List with Expand",
+        "iterationIndex": 0
+      },
+      {
+        "test": {
+          "filename": "Enrollments/Create Valid.bru"
+        },
+        "request": {
+          "method": "POST",
+          "url": "http://localhost:8080/api/enrollments",
+          "headers": {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+          },
+          "data": "{\n  \"studentId\": 1,\n  \"courseId\": 11,\n  \"enrollDate\": \"2026-01-15\",\n  \"status\": \"Active\"\n}"
+        },
+        "response": {
+          "status": 201,
+          "statusText": "Created",
+          "headers": {
+            "content-type": "application/json; charset=utf-8",
+            "date": "Mon, 25 May 2026 06:30:46 GMT",
+            "server": "Kestrel",
+            "location": "http://localhost:8080/api/enrollments/501",
+            "transfer-encoding": "chunked"
+          },
+          "data": {
+            "success": true,
+            "message": "Enrollment created successfully.",
+            "data": {
+              "enrollmentId": 501,
+              "studentId": 1,
+              "courseId": 11,
+              "enrollDate": "2026-01-15",
+              "status": "Active",
+              "student": {
+                "studentId": 1,
+                "fullName": "Nguyen An 01",
+                "email": "student01@lms.local",
+                "dateOfBirth": "2001-01-01"
+              },
+              "course": {
+                "courseId": 11,
+                "courseName": "Course 11 - Section B",
+                "semesterId": 1,
+                "subjectId": 1,
+                "semester": {
+                  "semesterId": 1,
+                  "semesterName": "Spring 2024",
+                  "startDate": "2024-01-08",
+                  "endDate": "2024-05-12"
+                },
+                "subject": {
+                  "subjectId": 1,
+                  "subjectCode": "PRN232",
+                  "subjectName": "Advanced Cross-Platform Application Programming",
+                  "credit": 3
+                }
+              }
+            }
+          },
+          "url": "http://localhost/api/enrollments",
+          "responseTime": 87,
+          "duration": 87,
+          "size": 590
+        },
+        "error": null,
+        "status": "pass",
+        "assertionResults": [],
+        "testResults": [
+          {
+            "description": "returns ApiResponse success with created enrollment",
+            "status": "pass",
+            "uid": "-VIdXM1ugFc3xkJjShd1R"
+          }
+        ],
+        "preRequestTestResults": [],
+        "postResponseTestResults": [],
+        "shouldStopRunnerExecution": false,
+        "runDuration": 0.170828947,
+        "name": "Create Valid",
+        "path": "Enrollments/Create Valid",
+        "iterationIndex": 0
+      },
+      {
+        "test": {
+          "filename": "Enrollments/Create Invalid.bru"
+        },
+        "request": {
+          "method": "POST",
+          "url": "http://localhost:8080/api/enrollments",
+          "headers": {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+          },
+          "data": "{\n  \"studentId\": 99999,\n  \"courseId\": 99999,\n  \"enrollDate\": \"2026-01-15\",\n  \"status\": \"Invalid\"\n}"
+        },
+        "response": {
+          "status": 400,
+          "statusText": "Bad Request",
+          "headers": {
+            "content-type": "application/json",
+            "date": "Mon, 25 May 2026 06:30:46 GMT",
+            "server": "Kestrel",
+            "transfer-encoding": "chunked"
+          },
+          "data": {
+            "success": false,
+            "message": "Student does not exist.",
+            "data": null,
+            "errors": {
+              "StudentId": "Student does not exist."
+            }
+          },
+          "url": "http://localhost/api/enrollments",
+          "responseTime": 16,
+          "duration": 16,
+          "size": 114
+        },
+        "error": null,
+        "status": "pass",
+        "assertionResults": [],
+        "testResults": [
+          {
+            "description": "returns ApiResponse validation error",
+            "status": "pass",
+            "uid": "BUGPfeAxXnGRzZ4e-bCSK"
+          }
+        ],
+        "preRequestTestResults": [],
+        "postResponseTestResults": [],
+        "shouldStopRunnerExecution": false,
+        "runDuration": 0.05950154,
+        "name": "Create Invalid",
+        "path": "Enrollments/Create Invalid",
+        "iterationIndex": 0
+      },
+      {
+        "test": {
+          "filename": "Enrollments/Get By ID Valid.bru"
+        },
+        "request": {
+          "method": "GET",
+          "url": "http://localhost:8080/api/enrollments/501",
+          "headers": {
+            "Accept": "application/json",
+            "content-type": null
+          }
+        },
+        "response": {
+          "status": 200,
+          "statusText": "OK",
+          "headers": {
+            "content-type": "application/json; charset=utf-8",
+            "date": "Mon, 25 May 2026 06:30:46 GMT",
+            "server": "Kestrel",
+            "transfer-encoding": "chunked"
+          },
+          "data": {
+            "success": true,
+            "message": "Enrollment retrieved successfully.",
+            "data": {
+              "enrollmentId": 501,
+              "studentId": 1,
+              "courseId": 11,
+              "enrollDate": "2026-01-15",
+              "status": "Active",
+              "student": {
+                "studentId": 1,
+                "fullName": "Nguyen An 01",
+                "email": "student01@lms.local",
+                "dateOfBirth": "2001-01-01"
+              },
+              "course": {
+                "courseId": 11,
+                "courseName": "Course 11 - Section B",
+                "semesterId": 1,
+                "subjectId": 1,
+                "semester": {
+                  "semesterId": 1,
+                  "semesterName": "Spring 2024",
+                  "startDate": "2024-01-08",
+                  "endDate": "2024-05-12"
+                },
+                "subject": {
+                  "subjectId": 1,
+                  "subjectCode": "PRN232",
+                  "subjectName": "Advanced Cross-Platform Application Programming",
+                  "credit": 3
+                }
+              }
+            }
+          },
+          "url": "http://localhost/api/enrollments/501",
+          "responseTime": 11,
+          "duration": 11,
+          "size": 592
+        },
+        "error": null,
+        "status": "pass",
+        "assertionResults": [],
+        "testResults": [
+          {
+            "description": "returns ApiResponse success with enrollment",
+            "status": "pass",
+            "uid": "6HaMF50eBEpJxWHgd8gfO"
+          }
+        ],
+        "preRequestTestResults": [],
+        "postResponseTestResults": [],
+        "shouldStopRunnerExecution": false,
+        "runDuration": 0.055211347,
+        "name": "Get By ID Valid",
+        "path": "Enrollments/Get By ID Valid",
+        "iterationIndex": 0
+      },
+      {
+        "test": {
+          "filename": "Enrollments/Get By ID Not Found.bru"
+        },
+        "request": {
+          "method": "GET",
+          "url": "http://localhost:8080/api/enrollments/99999",
+          "headers": {
+            "Accept": "application/json",
+            "content-type": null
+          }
+        },
+        "response": {
+          "status": 404,
+          "statusText": "Not Found",
+          "headers": {
+            "content-type": "application/json",
+            "date": "Mon, 25 May 2026 06:30:46 GMT",
+            "server": "Kestrel",
+            "transfer-encoding": "chunked"
+          },
+          "data": {
+            "success": false,
+            "message": "Enrollment with id 99999 was not found.",
+            "data": null,
+            "errors": null
+          },
+          "url": "http://localhost/api/enrollments/99999",
+          "responseTime": 8,
+          "duration": 8,
+          "size": 95
+        },
+        "error": null,
+        "status": "pass",
+        "assertionResults": [],
+        "testResults": [
+          {
+            "description": "returns ApiResponse not found",
+            "status": "pass",
+            "uid": "Rck9MCygnajf0uBmQF-50"
+          }
+        ],
+        "preRequestTestResults": [],
+        "postResponseTestResults": [],
+        "shouldStopRunnerExecution": false,
+        "runDuration": 0.05149366,
+        "name": "Get By ID Not Found",
+        "path": "Enrollments/Get By ID Not Found",
+        "iterationIndex": 0
+      },
+      {
+        "test": {
+          "filename": "Enrollments/Update.bru"
+        },
+        "request": {
+          "method": "PUT",
+          "url": "http://localhost:8080/api/enrollments/501",
+          "headers": {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+          },
+          "data": "{\n  \"studentId\": 1,\n  \"courseId\": 11,\n  \"enrollDate\": \"2026-02-01\",\n  \"status\": \"Completed\"\n}"
+        },
+        "response": {
+          "status": 200,
+          "statusText": "OK",
+          "headers": {
+            "content-type": "application/json; charset=utf-8",
+            "date": "Mon, 25 May 2026 06:30:46 GMT",
+            "server": "Kestrel",
+            "transfer-encoding": "chunked"
+          },
+          "data": {
+            "success": true,
+            "message": "Enrollment updated successfully.",
+            "data": {
+              "enrollmentId": 501,
+              "studentId": 1,
+              "courseId": 11,
+              "enrollDate": "2026-02-01",
+              "status": "Completed",
+              "student": {
+                "studentId": 1,
+                "fullName": "Nguyen An 01",
+                "email": "student01@lms.local",
+                "dateOfBirth": "2001-01-01"
+              },
+              "course": {
+                "courseId": 11,
+                "courseName": "Course 11 - Section B",
+                "semesterId": 1,
+                "subjectId": 1,
+                "semester": {
+                  "semesterId": 1,
+                  "semesterName": "Spring 2024",
+                  "startDate": "2024-01-08",
+                  "endDate": "2024-05-12"
+                },
+                "subject": {
+                  "subjectId": 1,
+                  "subjectCode": "PRN232",
+                  "subjectName": "Advanced Cross-Platform Application Programming",
+                  "credit": 3
+                }
+              }
+            }
+          },
+          "url": "http://localhost/api/enrollments/501",
+          "responseTime": 44,
+          "duration": 44,
+          "size": 593
+        },
+        "error": null,
+        "status": "pass",
+        "assertionResults": [],
+        "testResults": [
+          {
+            "description": "returns ApiResponse success with updated enrollment",
+            "status": "pass",
+            "uid": "ZrXOOHVSNFYQn1Q-dsiwB"
+          }
+        ],
+        "preRequestTestResults": [],
+        "postResponseTestResults": [],
+        "shouldStopRunnerExecution": false,
+        "runDuration": 0.0859721,
+        "name": "Update",
+        "path": "Enrollments/Update",
+        "iterationIndex": 0
+      },
+      {
+        "test": {
+          "filename": "Enrollments/Delete.bru"
+        },
+        "request": {
+          "method": "DELETE",
+          "url": "http://localhost:8080/api/enrollments/501",
+          "headers": {
+            "Accept": "application/json",
+            "content-type": null
+          }
+        },
+        "response": {
+          "status": 200,
+          "statusText": "OK",
+          "headers": {
+            "content-type": "application/json; charset=utf-8",
+            "date": "Mon, 25 May 2026 06:30:46 GMT",
+            "server": "Kestrel",
+            "transfer-encoding": "chunked"
+          },
+          "data": {
+            "success": true,
+            "message": "Enrollment deleted successfully."
+          },
+          "url": "http://localhost/api/enrollments/501",
+          "responseTime": 15,
+          "duration": 15,
+          "size": 61
+        },
+        "error": null,
+        "status": "pass",
+        "assertionResults": [],
+        "testResults": [
+          {
+            "description": "returns ApiResponse success for delete",
+            "status": "pass",
+            "uid": "IKNhJyc_nC-6dxQ6rWOX4"
+          }
+        ],
+        "preRequestTestResults": [],
+        "postResponseTestResults": [],
+        "shouldStopRunnerExecution": false,
+        "runDuration": 0.057767172,
+        "name": "Delete",
+        "path": "Enrollments/Delete",
+        "iterationIndex": 0
+      },
+      {
+        "test": {
+          "filename": "Enrollments/Get List Advanced.bru"
+        },
+        "request": {
+          "method": "GET",
+          "url": "http://localhost:8080/api/enrollments?search=Active&sort=-enrollDate&page=1&size=5&fields=enrollmentId,studentId,courseId,status",
+          "headers": {
+            "Accept": "application/json",
+            "content-type": null
+          }
+        },
+        "response": {
+          "status": 200,
+          "statusText": "OK",
+          "headers": {
+            "content-type": "application/json; charset=utf-8",
+            "date": "Mon, 25 May 2026 06:30:46 GMT",
+            "server": "Kestrel",
+            "transfer-encoding": "chunked"
+          },
+          "data": {
+            "success": true,
+            "message": "Enrollments retrieved successfully.",
+            "data": {
+              "content": [
+                {
+                  "enrollmentId": 448,
+                  "studentId": 45,
+                  "courseId": 12,
+                  "status": "Active"
+                },
+                {
+                  "enrollmentId": 457,
+                  "studentId": 46,
+                  "courseId": 12,
+                  "status": "Active"
+                },
+                {
+                  "enrollmentId": 430,
+                  "studentId": 43,
+                  "courseId": 12,
+                  "status": "Active"
+                },
+                {
+                  "enrollmentId": 439,
+                  "studentId": 44,
+                  "courseId": 12,
+                  "status": "Active"
+                },
+                {
+                  "enrollmentId": 466,
+                  "studentId": 47,
+                  "courseId": 12,
+                  "status": "Active"
+                }
+              ],
+              "pagination": {
+                "page": 1,
+                "pageSize": 5,
+                "totalItems": 250,
+                "totalPages": 50
+              }
+            }
+          },
+          "url": "http://localhost/api/enrollments?search=Active&sort=-enrollDate&page=1&size=5&fields=enrollmentId,studentId,courseId,status",
+          "responseTime": 42,
+          "duration": 42,
+          "size": 495
+        },
+        "error": null,
+        "status": "pass",
+        "assertionResults": [],
+        "testResults": [
+          {
+            "description": "returns paged ApiResponse for advanced list query",
+            "status": "pass",
+            "uid": "z2It5PNnCNE_wxQ-z6vVE"
+          }
+        ],
+        "preRequestTestResults": [],
+        "postResponseTestResults": [],
+        "shouldStopRunnerExecution": false,
+        "runDuration": 0.085013115,
+        "name": "Get List Advanced",
+        "path": "Enrollments/Get List Advanced",
+        "iterationIndex": 0
+      },
+      {
+        "test": {
+          "filename": "Enrollments/Get List with Expand.bru"
+        },
+        "request": {
+          "method": "GET",
+          "url": "http://localhost:8080/api/enrollments?expand=student,course&page=1&size=5",
+          "headers": {
+            "Accept": "application/json",
+            "content-type": null
+          }
+        },
+        "response": {
+          "status": 200,
+          "statusText": "OK",
+          "headers": {
+            "content-type": "application/json; charset=utf-8",
+            "date": "Mon, 25 May 2026 06:30:46 GMT",
+            "server": "Kestrel",
+            "transfer-encoding": "chunked"
+          },
+          "data": {
+            "success": true,
+            "message": "Enrollments retrieved successfully.",
+            "data": {
+              "content": [
+                {
+                  "enrollmentId": 1,
+                  "studentId": 1,
+                  "courseId": 1,
+                  "enrollDate": "2025-01-01",
+                  "status": "Dropped",
+                  "student": {
+                    "studentId": 1,
+                    "fullName": "Nguyen An 01",
+                    "email": "student01@lms.local",
+                    "dateOfBirth": "2001-01-01"
+                  },
+                  "course": {
+                    "courseId": 1,
+                    "courseName": "Course 01 - Section A",
+                    "semesterId": 1,
+                    "subjectId": 1,
+                    "subject": {
+                      "subjectId": 1,
+                      "subjectCode": "PRN232",
+                      "subjectName": "Advanced Cross-Platform Application Programming",
+                      "credit": 3
+                    }
+                  }
+                },
+                {
+                  "enrollmentId": 2,
+                  "studentId": 1,
+                  "courseId": 2,
+                  "enrollDate": "2024-02-02",
+                  "status": "Active",
+                  "student": {
+                    "studentId": 1,
+                    "fullName": "Nguyen An 01",
+                    "email": "student01@lms.local",
+                    "dateOfBirth": "2001-01-01"
+                  },
+                  "course": {
+                    "courseId": 2,
+                    "courseName": "Course 02 - Section A",
+                    "semesterId": 2,
+                    "subjectId": 2,
+                    "subject": {
+                      "subjectId": 2,
+                      "subjectCode": "PRO192",
+                      "subjectName": "Object-Oriented Programming",
+                      "credit": 3
+                    }
+                  }
+                },
+                {
+                  "enrollmentId": 3,
+                  "studentId": 1,
+                  "courseId": 3,
+                  "enrollDate": "2025-03-03",
+                  "status": "Dropped",
+                  "student": {
+                    "studentId": 1,
+                    "fullName": "Nguyen An 01",
+                    "email": "student01@lms.local",
+                    "dateOfBirth": "2001-01-01"
+                  },
+                  "course": {
+                    "courseId": 3,
+                    "courseName": "Course 03 - Section A",
+                    "semesterId": 3,
+                    "subjectId": 3,
+                    "subject": {
+                      "subjectId": 3,
+                      "subjectCode": "DBI202",
+                      "subjectName": "Database Systems",
+                      "credit": 3
+                    }
+                  }
+                },
+                {
+                  "enrollmentId": 4,
+                  "studentId": 1,
+                  "courseId": 4,
+                  "enrollDate": "2024-04-04",
+                  "status": "Active",
+                  "student": {
+                    "studentId": 1,
+                    "fullName": "Nguyen An 01",
+                    "email": "student01@lms.local",
+                    "dateOfBirth": "2001-01-01"
+                  },
+                  "course": {
+                    "courseId": 4,
+                    "courseName": "Course 04 - Section A",
+                    "semesterId": 4,
+                    "subjectId": 4,
+                    "subject": {
+                      "subjectId": 4,
+                      "subjectCode": "SWE201",
+                      "subjectName": "Introduction to Software Engineering",
+                      "credit": 3
+                    }
+                  }
+                },
+                {
+                  "enrollmentId": 5,
+                  "studentId": 1,
+                  "courseId": 5,
+                  "enrollDate": "2025-05-05",
+                  "status": "Dropped",
+                  "student": {
+                    "studentId": 1,
+                    "fullName": "Nguyen An 01",
+                    "email": "student01@lms.local",
+                    "dateOfBirth": "2001-01-01"
+                  },
+                  "course": {
+                    "courseId": 5,
+                    "courseName": "Course 05 - Section A",
+                    "semesterId": 5,
+                    "subjectId": 5,
+                    "subject": {
+                      "subjectId": 5,
+                      "subjectCode": "CSD201",
+                      "subjectName": "Data Structures and Algorithms",
+                      "credit": 3
+                    }
+                  }
+                }
+              ],
+              "pagination": {
+                "page": 1,
+                "pageSize": 5,
+                "totalItems": 500,
+                "totalPages": 100
+              }
+            }
+          },
+          "url": "http://localhost/api/enrollments?expand=student,course&page=1&size=5",
+          "responseTime": 32,
+          "duration": 32,
+          "size": 2145
+        },
+        "error": null,
+        "status": "pass",
+        "assertionResults": [],
+        "testResults": [
+          {
+            "description": "returns expanded enrollment relationships",
+            "status": "pass",
+            "uid": "KpD2z151u_f5huNEZyWoO"
+          }
+        ],
+        "preRequestTestResults": [],
+        "postResponseTestResults": [],
+        "shouldStopRunnerExecution": false,
+        "runDuration": 0.075718562,
+        "name": "Get List with Expand",
+        "path": "Enrollments/Get List with Expand",
+        "iterationIndex": 0
+      },
+      {
+        "test": {
+          "filename": "Semesters/Create Valid.bru"
+        },
+        "request": {
+          "method": "POST",
+          "url": "http://localhost:8080/api/semesters",
+          "headers": {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+          },
+          "data": "{\n  \"semesterName\": \"E2E Semester 1779690647648\",\n  \"startDate\": \"2026-01-05\",\n  \"endDate\": \"2026-05-10\"\n}"
+        },
+        "response": {
+          "status": 201,
+          "statusText": "Created",
+          "headers": {
+            "content-type": "application/json; charset=utf-8",
+            "date": "Mon, 25 May 2026 06:30:46 GMT",
+            "server": "Kestrel",
+            "location": "http://localhost:8080/api/semesters/6",
+            "transfer-encoding": "chunked"
+          },
+          "data": {
+            "success": true,
+            "message": "Semester created successfully.",
+            "data": {
+              "courses": [],
+              "semesterId": 6,
+              "semesterName": "E2E Semester 1779690647648",
+              "startDate": "2026-01-05",
+              "endDate": "2026-05-10"
+            }
+          },
+          "url": "http://localhost/api/semesters",
+          "responseTime": 90,
+          "duration": 90,
+          "size": 188
+        },
+        "error": null,
+        "status": "pass",
+        "assertionResults": [],
+        "testResults": [
+          {
+            "description": "returns ApiResponse success with created semester",
+            "status": "pass",
+            "uid": "yx2JyJbjVpLs0_GSxs_Wh"
+          }
+        ],
+        "preRequestTestResults": [],
+        "postResponseTestResults": [],
+        "shouldStopRunnerExecution": false,
+        "runDuration": 0.222118566,
+        "name": "Create Valid",
+        "path": "Semesters/Create Valid",
+        "iterationIndex": 0
+      },
+      {
+        "test": {
+          "filename": "Semesters/Create Invalid.bru"
+        },
+        "request": {
+          "method": "POST",
+          "url": "http://localhost:8080/api/semesters",
+          "headers": {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+          },
+          "data": "{\n  \"semesterName\": \"\",\n  \"startDate\": \"2026-06-01\",\n  \"endDate\": \"2026-05-01\"\n}"
+        },
+        "response": {
+          "status": 400,
+          "statusText": "Bad Request",
+          "headers": {
+            "content-type": "application/json",
+            "date": "Mon, 25 May 2026 06:30:47 GMT",
+            "server": "Kestrel",
+            "transfer-encoding": "chunked"
+          },
+          "data": {
+            "success": false,
+            "message": "Semester name is required.",
+            "data": null,
+            "errors": {
+              "SemesterName": "Semester name is required."
+            }
+          },
+          "url": "http://localhost/api/semesters",
+          "responseTime": 7,
+          "duration": 7,
+          "size": 123
+        },
+        "error": null,
+        "status": "pass",
+        "assertionResults": [],
+        "testResults": [
+          {
+            "description": "returns ApiResponse validation error",
+            "status": "pass",
+            "uid": "wU9o--03IaiH_c6kHdIFz"
+          }
+        ],
+        "preRequestTestResults": [],
+        "postResponseTestResults": [],
+        "shouldStopRunnerExecution": false,
+        "runDuration": 0.050987802,
+        "name": "Create Invalid",
+        "path": "Semesters/Create Invalid",
+        "iterationIndex": 0
+      },
+      {
+        "test": {
+          "filename": "Semesters/Get By ID Valid.bru"
+        },
+        "request": {
+          "method": "GET",
+          "url": "http://localhost:8080/api/semesters/6",
+          "headers": {
+            "Accept": "application/json",
+            "content-type": null
+          }
+        },
+        "response": {
+          "status": 200,
+          "statusText": "OK",
+          "headers": {
+            "content-type": "application/json; charset=utf-8",
+            "date": "Mon, 25 May 2026 06:30:47 GMT",
+            "server": "Kestrel",
+            "transfer-encoding": "chunked"
+          },
+          "data": {
+            "success": true,
+            "message": "Semester retrieved successfully.",
+            "data": {
+              "courses": [],
+              "semesterId": 6,
+              "semesterName": "E2E Semester 1779690647648",
+              "startDate": "2026-01-05",
+              "endDate": "2026-05-10"
+            }
+          },
+          "url": "http://localhost/api/semesters/6",
+          "responseTime": 9,
+          "duration": 9,
+          "size": 190
+        },
+        "error": null,
+        "status": "pass",
+        "assertionResults": [],
+        "testResults": [
+          {
+            "description": "returns ApiResponse success with semester",
+            "status": "pass",
+            "uid": "-VVoyQ188Qsx2nocDxlQ1"
+          }
+        ],
+        "preRequestTestResults": [],
+        "postResponseTestResults": [],
+        "shouldStopRunnerExecution": false,
+        "runDuration": 0.054489948,
+        "name": "Get By ID Valid",
+        "path": "Semesters/Get By ID Valid",
+        "iterationIndex": 0
+      },
+      {
+        "test": {
+          "filename": "Semesters/Get By ID Not Found.bru"
+        },
+        "request": {
+          "method": "GET",
+          "url": "http://localhost:8080/api/semesters/99999",
+          "headers": {
+            "Accept": "application/json",
+            "content-type": null
+          }
+        },
+        "response": {
+          "status": 404,
+          "statusText": "Not Found",
+          "headers": {
+            "content-type": "application/json",
+            "date": "Mon, 25 May 2026 06:30:47 GMT",
+            "server": "Kestrel",
+            "transfer-encoding": "chunked"
+          },
+          "data": {
+            "success": false,
+            "message": "Semester with id 99999 was not found.",
+            "data": null,
+            "errors": null
+          },
+          "url": "http://localhost/api/semesters/99999",
+          "responseTime": 7,
+          "duration": 7,
+          "size": 93
+        },
+        "error": null,
+        "status": "pass",
+        "assertionResults": [],
+        "testResults": [
+          {
+            "description": "returns ApiResponse not found",
+            "status": "pass",
+            "uid": "ZJdoNQ0UUDvoXzseRp8F_"
+          }
+        ],
+        "preRequestTestResults": [],
+        "postResponseTestResults": [],
+        "shouldStopRunnerExecution": false,
+        "runDuration": 0.052122973,
+        "name": "Get By ID Not Found",
+        "path": "Semesters/Get By ID Not Found",
+        "iterationIndex": 0
+      },
+      {
+        "test": {
+          "filename": "Semesters/Update.bru"
+        },
+        "request": {
+          "method": "PUT",
+          "url": "http://localhost:8080/api/semesters/6",
+          "headers": {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+          },
+          "data": "{\n  \"semesterName\": \"E2E Semester Updated 1779690647648\",\n  \"startDate\": \"2026-01-12\",\n  \"endDate\": \"2026-05-17\"\n}"
+        },
+        "response": {
+          "status": 200,
+          "statusText": "OK",
+          "headers": {
+            "content-type": "application/json; charset=utf-8",
+            "date": "Mon, 25 May 2026 06:30:47 GMT",
+            "server": "Kestrel",
+            "transfer-encoding": "chunked"
+          },
+          "data": {
+            "success": true,
+            "message": "Semester updated successfully.",
+            "data": {
+              "courses": [],
+              "semesterId": 6,
+              "semesterName": "E2E Semester Updated 1779690647648",
+              "startDate": "2026-01-12",
+              "endDate": "2026-05-17"
+            }
+          },
+          "url": "http://localhost/api/semesters/6",
+          "responseTime": 27,
+          "duration": 27,
+          "size": 196
+        },
+        "error": null,
+        "status": "pass",
+        "assertionResults": [],
+        "testResults": [
+          {
+            "description": "returns ApiResponse success with updated semester",
+            "status": "pass",
+            "uid": "pbDoDFSFoCnJAFYftkwlD"
+          }
+        ],
+        "preRequestTestResults": [],
+        "postResponseTestResults": [],
+        "shouldStopRunnerExecution": false,
+        "runDuration": 0.072100573,
+        "name": "Update",
+        "path": "Semesters/Update",
+        "iterationIndex": 0
+      },
+      {
+        "test": {
+          "filename": "Semesters/Delete.bru"
+        },
+        "request": {
+          "method": "DELETE",
+          "url": "http://localhost:8080/api/semesters/6",
+          "headers": {
+            "Accept": "application/json",
+            "content-type": null
+          }
+        },
+        "response": {
+          "status": 200,
+          "statusText": "OK",
+          "headers": {
+            "content-type": "application/json; charset=utf-8",
+            "date": "Mon, 25 May 2026 06:30:47 GMT",
+            "server": "Kestrel",
+            "transfer-encoding": "chunked"
+          },
+          "data": {
+            "success": true,
+            "message": "Semester deleted successfully."
+          },
+          "url": "http://localhost/api/semesters/6",
+          "responseTime": 12,
+          "duration": 12,
+          "size": 59
+        },
+        "error": null,
+        "status": "pass",
+        "assertionResults": [],
+        "testResults": [
+          {
+            "description": "returns ApiResponse success for delete",
+            "status": "pass",
+            "uid": "Qh83UWZdny9oJzytf_QPp"
+          }
+        ],
+        "preRequestTestResults": [],
+        "postResponseTestResults": [],
+        "shouldStopRunnerExecution": false,
+        "runDuration": 0.057400504,
+        "name": "Delete",
+        "path": "Semesters/Delete",
+        "iterationIndex": 0
+      },
+      {
+        "test": {
+          "filename": "Semesters/Get List Advanced.bru"
+        },
+        "request": {
+          "method": "GET",
+          "url": "http://localhost:8080/api/semesters?search=2024&sort=-startDate&page=1&size=3&fields=semesterId,semesterName,startDate",
+          "headers": {
+            "Accept": "application/json",
+            "content-type": null
+          }
+        },
+        "response": {
+          "status": 200,
+          "statusText": "OK",
+          "headers": {
+            "content-type": "application/json; charset=utf-8",
+            "date": "Mon, 25 May 2026 06:30:47 GMT",
+            "server": "Kestrel",
+            "transfer-encoding": "chunked"
+          },
+          "data": {
+            "success": true,
+            "message": "Semesters retrieved successfully.",
+            "data": {
+              "content": [
+                {
+                  "semesterId": 3,
+                  "semesterName": "Fall 2024",
+                  "startDate": "2024-09-02"
+                },
+                {
+                  "semesterId": 2,
+                  "semesterName": "Summer 2024",
+                  "startDate": "2024-05-20"
+                },
+                {
+                  "semesterId": 1,
+                  "semesterName": "Spring 2024",
+                  "startDate": "2024-01-08"
+                }
+              ],
+              "pagination": {
+                "page": 1,
+                "pageSize": 3,
+                "totalItems": 3,
+                "totalPages": 1
+              }
+            }
+          },
+          "url": "http://localhost/api/semesters?search=2024&sort=-startDate&page=1&size=3&fields=semesterId,semesterName,startDate",
+          "responseTime": 17,
+          "duration": 17,
+          "size": 361
+        },
+        "error": null,
+        "status": "pass",
+        "assertionResults": [],
+        "testResults": [
+          {
+            "description": "returns paged ApiResponse for advanced list query",
+            "status": "pass",
+            "uid": "eQyY36dbLALdWoRf1aTpU"
+          }
+        ],
+        "preRequestTestResults": [],
+        "postResponseTestResults": [],
+        "shouldStopRunnerExecution": false,
+        "runDuration": 0.06259315,
+        "name": "Get List Advanced",
+        "path": "Semesters/Get List Advanced",
+        "iterationIndex": 0
+      },
+      {
+        "test": {
+          "filename": "Students/Create Valid.bru"
+        },
+        "request": {
+          "method": "POST",
+          "url": "http://localhost:8080/api/students",
+          "headers": {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+          },
+          "data": "{\n  \"fullName\": \"E2E Student\",\n  \"email\": \"e2e.student.1779690648218@lms.local\",\n  \"dateOfBirth\": \"2001-02-03\"\n}"
+        },
+        "response": {
+          "status": 201,
+          "statusText": "Created",
+          "headers": {
+            "content-type": "application/json; charset=utf-8",
+            "date": "Mon, 25 May 2026 06:30:47 GMT",
+            "server": "Kestrel",
+            "location": "http://localhost:8080/api/students/51",
+            "transfer-encoding": "chunked"
+          },
+          "data": {
+            "success": true,
+            "message": "Student created successfully.",
+            "data": {
+              "enrollments": [],
+              "studentId": 51,
+              "fullName": "E2E Student",
+              "email": "e2e.student.1779690648218@lms.local",
+              "dateOfBirth": "2001-02-03"
+            }
+          },
+          "url": "http://localhost/api/students",
+          "responseTime": 33,
+          "duration": 33,
+          "size": 197
+        },
+        "error": null,
+        "status": "pass",
+        "assertionResults": [],
+        "testResults": [
+          {
+            "description": "returns ApiResponse success with created student",
+            "status": "pass",
+            "uid": "wooYuV0ZLcq4II4BjYSXX"
+          }
+        ],
+        "preRequestTestResults": [],
+        "postResponseTestResults": [],
+        "shouldStopRunnerExecution": false,
+        "runDuration": 0.166908023,
+        "name": "Create Valid",
+        "path": "Students/Create Valid",
+        "iterationIndex": 0
+      },
+      {
+        "test": {
+          "filename": "Students/Create Invalid.bru"
+        },
+        "request": {
+          "method": "POST",
+          "url": "http://localhost:8080/api/students",
+          "headers": {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+          },
+          "data": "{\n  \"fullName\": \"\",\n  \"email\": \"\",\n  \"dateOfBirth\": \"3000-01-01\"\n}"
+        },
+        "response": {
+          "status": 400,
+          "statusText": "Bad Request",
+          "headers": {
+            "content-type": "application/json",
+            "date": "Mon, 25 May 2026 06:30:47 GMT",
+            "server": "Kestrel",
+            "transfer-encoding": "chunked"
+          },
+          "data": {
+            "success": false,
+            "message": "Full name is required.",
+            "data": null,
+            "errors": {
+              "FullName": "Full name is required."
+            }
+          },
+          "url": "http://localhost/api/students",
+          "responseTime": 5,
+          "duration": 5,
+          "size": 111
+        },
+        "error": null,
+        "status": "pass",
+        "assertionResults": [],
+        "testResults": [
+          {
+            "description": "returns ApiResponse validation error",
+            "status": "pass",
+            "uid": "PtsoRXSHyeXWcdnLGD9hY"
+          }
+        ],
+        "preRequestTestResults": [],
+        "postResponseTestResults": [],
+        "shouldStopRunnerExecution": false,
+        "runDuration": 0.053082872,
+        "name": "Create Invalid",
+        "path": "Students/Create Invalid",
+        "iterationIndex": 0
+      },
+      {
+        "test": {
+          "filename": "Students/Get By ID Valid.bru"
+        },
+        "request": {
+          "method": "GET",
+          "url": "http://localhost:8080/api/students/51",
+          "headers": {
+            "Accept": "application/json",
+            "content-type": null
+          }
+        },
+        "response": {
+          "status": 200,
+          "statusText": "OK",
+          "headers": {
+            "content-type": "application/json; charset=utf-8",
+            "date": "Mon, 25 May 2026 06:30:47 GMT",
+            "server": "Kestrel",
+            "transfer-encoding": "chunked"
+          },
+          "data": {
+            "success": true,
+            "message": "Student retrieved successfully.",
+            "data": {
+              "enrollments": [],
+              "studentId": 51,
+              "fullName": "E2E Student",
+              "email": "e2e.student.1779690648218@lms.local",
+              "dateOfBirth": "2001-02-03"
+            }
+          },
+          "url": "http://localhost/api/students/51",
+          "responseTime": 10,
+          "duration": 10,
+          "size": 199
+        },
+        "error": null,
+        "status": "pass",
+        "assertionResults": [],
+        "testResults": [
+          {
+            "description": "returns ApiResponse success with student",
+            "status": "pass",
+            "uid": "pqLDxZkqqkPy43OLClh_8"
+          }
+        ],
+        "preRequestTestResults": [],
+        "postResponseTestResults": [],
+        "shouldStopRunnerExecution": false,
+        "runDuration": 0.05544228,
+        "name": "Get By ID Valid",
+        "path": "Students/Get By ID Valid",
+        "iterationIndex": 0
+      },
+      {
+        "test": {
+          "filename": "Students/Get By ID Not Found.bru"
+        },
+        "request": {
+          "method": "GET",
+          "url": "http://localhost:8080/api/students/99999",
+          "headers": {
+            "Accept": "application/json",
+            "content-type": null
+          }
+        },
+        "response": {
+          "status": 404,
+          "statusText": "Not Found",
+          "headers": {
+            "content-type": "application/json",
+            "date": "Mon, 25 May 2026 06:30:47 GMT",
+            "server": "Kestrel",
+            "transfer-encoding": "chunked"
+          },
+          "data": {
+            "success": false,
+            "message": "Student with id 99999 was not found.",
+            "data": null,
+            "errors": null
+          },
+          "url": "http://localhost/api/students/99999",
+          "responseTime": 6,
+          "duration": 6,
+          "size": 92
+        },
+        "error": null,
+        "status": "pass",
+        "assertionResults": [],
+        "testResults": [
+          {
+            "description": "returns ApiResponse not found",
+            "status": "pass",
+            "uid": "6wqnIBfYRTK_WpcSkbeuU"
+          }
+        ],
+        "preRequestTestResults": [],
+        "postResponseTestResults": [],
+        "shouldStopRunnerExecution": false,
+        "runDuration": 0.050975416,
+        "name": "Get By ID Not Found",
+        "path": "Students/Get By ID Not Found",
+        "iterationIndex": 0
+      },
+      {
+        "test": {
+          "filename": "Students/Update.bru"
+        },
+        "request": {
+          "method": "PUT",
+          "url": "http://localhost:8080/api/students/51",
+          "headers": {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+          },
+          "data": "{\n  \"fullName\": \"E2E Student Updated\",\n  \"email\": \"e2e.student.updated.1779690648218@lms.local\",\n  \"dateOfBirth\": \"2002-03-04\"\n}"
+        },
+        "response": {
+          "status": 200,
+          "statusText": "OK",
+          "headers": {
+            "content-type": "application/json; charset=utf-8",
+            "date": "Mon, 25 May 2026 06:30:47 GMT",
+            "server": "Kestrel",
+            "transfer-encoding": "chunked"
+          },
+          "data": {
+            "success": true,
+            "message": "Student updated successfully.",
+            "data": {
+              "enrollments": [],
+              "studentId": 51,
+              "fullName": "E2E Student Updated",
+              "email": "e2e.student.updated.1779690648218@lms.local",
+              "dateOfBirth": "2002-03-04"
+            }
+          },
+          "url": "http://localhost/api/students/51",
+          "responseTime": 16,
+          "duration": 16,
+          "size": 213
+        },
+        "error": null,
+        "status": "pass",
+        "assertionResults": [],
+        "testResults": [
+          {
+            "description": "returns ApiResponse success with updated student",
+            "status": "pass",
+            "uid": "weUQsFf2b06uuCt-8JCej"
+          }
+        ],
+        "preRequestTestResults": [],
+        "postResponseTestResults": [],
+        "shouldStopRunnerExecution": false,
+        "runDuration": 0.062088307,
+        "name": "Update",
+        "path": "Students/Update",
+        "iterationIndex": 0
+      },
+      {
+        "test": {
+          "filename": "Students/Delete.bru"
+        },
+        "request": {
+          "method": "DELETE",
+          "url": "http://localhost:8080/api/students/51",
+          "headers": {
+            "Accept": "application/json",
+            "content-type": null
+          }
+        },
+        "response": {
+          "status": 200,
+          "statusText": "OK",
+          "headers": {
+            "content-type": "application/json; charset=utf-8",
+            "date": "Mon, 25 May 2026 06:30:47 GMT",
+            "server": "Kestrel",
+            "transfer-encoding": "chunked"
+          },
+          "data": {
+            "success": true,
+            "message": "Student deleted successfully."
+          },
+          "url": "http://localhost/api/students/51",
+          "responseTime": 13,
+          "duration": 13,
+          "size": 58
+        },
+        "error": null,
+        "status": "pass",
+        "assertionResults": [],
+        "testResults": [
+          {
+            "description": "returns ApiResponse success for delete",
+            "status": "pass",
+            "uid": "qdRcVo2cdH-mkj3uDnpNm"
+          }
+        ],
+        "preRequestTestResults": [],
+        "postResponseTestResults": [],
+        "shouldStopRunnerExecution": false,
+        "runDuration": 0.059000109,
+        "name": "Delete",
+        "path": "Students/Delete",
+        "iterationIndex": 0
+      },
+      {
+        "test": {
+          "filename": "Students/Get List Advanced.bru"
+        },
+        "request": {
+          "method": "GET",
+          "url": "http://localhost:8080/api/students?search=student&sort=-email&page=2&size=10&fields=studentId,fullName,email",
+          "headers": {
+            "Accept": "application/json",
+            "content-type": null
+          }
+        },
+        "response": {
+          "status": 200,
+          "statusText": "OK",
+          "headers": {
+            "content-type": "application/json; charset=utf-8",
+            "date": "Mon, 25 May 2026 06:30:47 GMT",
+            "server": "Kestrel",
+            "transfer-encoding": "chunked"
+          },
+          "data": {
+            "success": true,
+            "message": "Students retrieved successfully.",
+            "data": {
+              "content": [
+                {
+                  "studentId": 40,
+                  "fullName": "Hoang Nam 40",
+                  "email": "student40@lms.local"
+                },
+                {
+                  "studentId": 39,
+                  "fullName": "Pham Minh 39",
+                  "email": "student39@lms.local"
+                },
+                {
+                  "studentId": 38,
+                  "fullName": "Le Linh 38",
+                  "email": "student38@lms.local"
+                },
+                {
+                  "studentId": 37,
+                  "fullName": "Tran Khanh 37",
+                  "email": "student37@lms.local"
+                },
+                {
+                  "studentId": 36,
+                  "fullName": "Nguyen Ha 36",
+                  "email": "student36@lms.local"
+                },
+                {
+                  "studentId": 35,
+                  "fullName": "Hoang Giang 35",
+                  "email": "student35@lms.local"
+                },
+                {
+                  "studentId": 34,
+                  "fullName": "Pham Duc 34",
+                  "email": "student34@lms.local"
+                },
+                {
+                  "studentId": 33,
+                  "fullName": "Le Chi 33",
+                  "email": "student33@lms.local"
+                },
+                {
+                  "studentId": 32,
+                  "fullName": "Tran Bao 32",
+                  "email": "student32@lms.local"
+                },
+                {
+                  "studentId": 31,
+                  "fullName": "Nguyen An 31",
+                  "email": "student31@lms.local"
+                }
+              ],
+              "pagination": {
+                "page": 2,
+                "pageSize": 10,
+                "totalItems": 50,
+                "totalPages": 5
+              }
+            }
+          },
+          "url": "http://localhost/api/students?search=student&sort=-email&page=2&size=10&fields=studentId,fullName,email",
+          "responseTime": 19,
+          "duration": 19,
+          "size": 877
+        },
+        "error": null,
+        "status": "pass",
+        "assertionResults": [],
+        "testResults": [
+          {
+            "description": "returns paged ApiResponse for advanced list query",
+            "status": "pass",
+            "uid": "NIU9PEN6rxaTXPbdto1jV"
+          }
+        ],
+        "preRequestTestResults": [],
+        "postResponseTestResults": [],
+        "shouldStopRunnerExecution": false,
+        "runDuration": 0.065558296,
+        "name": "Get List Advanced",
+        "path": "Students/Get List Advanced",
+        "iterationIndex": 0
+      },
+      {
+        "test": {
+          "filename": "Subjects/Create Valid.bru"
+        },
+        "request": {
+          "method": "POST",
+          "url": "http://localhost:8080/api/subjects",
+          "headers": {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+          },
+          "data": "{\n  \"subjectCode\": \"E2E90648733\",\n  \"subjectName\": \"E2E Subject\",\n  \"credit\": 3\n}"
+        },
+        "response": {
+          "status": 201,
+          "statusText": "Created",
+          "headers": {
+            "content-type": "application/json; charset=utf-8",
+            "date": "Mon, 25 May 2026 06:30:47 GMT",
+            "server": "Kestrel",
+            "location": "http://localhost:8080/api/subjects/11",
+            "transfer-encoding": "chunked"
+          },
+          "data": {
+            "success": true,
+            "message": "Subject created successfully.",
+            "data": {
+              "courses": [],
+              "subjectId": 11,
+              "subjectCode": "E2E90648733",
+              "subjectName": "E2E Subject",
+              "credit": 3
+            }
+          },
+          "url": "http://localhost/api/subjects",
+          "responseTime": 33,
+          "duration": 33,
+          "size": 162
+        },
+        "error": null,
+        "status": "pass",
+        "assertionResults": [],
+        "testResults": [
+          {
+            "description": "returns ApiResponse success with created subject",
+            "status": "pass",
+            "uid": "t-KMaLxmXUU_ulNJAtJtL"
+          }
+        ],
+        "preRequestTestResults": [],
+        "postResponseTestResults": [],
+        "shouldStopRunnerExecution": false,
+        "runDuration": 0.172008026,
+        "name": "Create Valid",
+        "path": "Subjects/Create Valid",
+        "iterationIndex": 0
+      },
+      {
+        "test": {
+          "filename": "Subjects/Create Invalid.bru"
+        },
+        "request": {
+          "method": "POST",
+          "url": "http://localhost:8080/api/subjects",
+          "headers": {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+          },
+          "data": "{\n  \"subjectCode\": \"\",\n  \"subjectName\": \"\",\n  \"credit\": 0\n}"
+        },
+        "response": {
+          "status": 400,
+          "statusText": "Bad Request",
+          "headers": {
+            "content-type": "application/json",
+            "date": "Mon, 25 May 2026 06:30:48 GMT",
+            "server": "Kestrel",
+            "transfer-encoding": "chunked"
+          },
+          "data": {
+            "success": false,
+            "message": "Subject code is required.",
+            "data": null,
+            "errors": {
+              "SubjectCode": "Subject code is required."
+            }
+          },
+          "url": "http://localhost/api/subjects",
+          "responseTime": 5,
+          "duration": 5,
+          "size": 120
+        },
+        "error": null,
+        "status": "pass",
+        "assertionResults": [],
+        "testResults": [
+          {
+            "description": "returns ApiResponse validation error",
+            "status": "pass",
+            "uid": "yn_opDMXuLG0eylAYyeSV"
+          }
+        ],
+        "preRequestTestResults": [],
+        "postResponseTestResults": [],
+        "shouldStopRunnerExecution": false,
+        "runDuration": 0.050743772,
+        "name": "Create Invalid",
+        "path": "Subjects/Create Invalid",
+        "iterationIndex": 0
+      },
+      {
+        "test": {
+          "filename": "Subjects/Get By ID Valid.bru"
+        },
+        "request": {
+          "method": "GET",
+          "url": "http://localhost:8080/api/subjects/11",
+          "headers": {
+            "Accept": "application/json",
+            "content-type": null
+          }
+        },
+        "response": {
+          "status": 200,
+          "statusText": "OK",
+          "headers": {
+            "content-type": "application/json; charset=utf-8",
+            "date": "Mon, 25 May 2026 06:30:48 GMT",
+            "server": "Kestrel",
+            "transfer-encoding": "chunked"
+          },
+          "data": {
+            "success": true,
+            "message": "Subject retrieved successfully.",
+            "data": {
+              "courses": [],
+              "subjectId": 11,
+              "subjectCode": "E2E90648733",
+              "subjectName": "E2E Subject",
+              "credit": 3
+            }
+          },
+          "url": "http://localhost/api/subjects/11",
+          "responseTime": 9,
+          "duration": 9,
+          "size": 164
+        },
+        "error": null,
+        "status": "pass",
+        "assertionResults": [],
+        "testResults": [
+          {
+            "description": "returns ApiResponse success with subject",
+            "status": "pass",
+            "uid": "KqIbMuSxPjrfmL538PRHc"
+          }
+        ],
+        "preRequestTestResults": [],
+        "postResponseTestResults": [],
+        "shouldStopRunnerExecution": false,
+        "runDuration": 0.054551526,
+        "name": "Get By ID Valid",
+        "path": "Subjects/Get By ID Valid",
+        "iterationIndex": 0
+      },
+      {
+        "test": {
+          "filename": "Subjects/Get By ID Not Found.bru"
+        },
+        "request": {
+          "method": "GET",
+          "url": "http://localhost:8080/api/subjects/99999",
+          "headers": {
+            "Accept": "application/json",
+            "content-type": null
+          }
+        },
+        "response": {
+          "status": 404,
+          "statusText": "Not Found",
+          "headers": {
+            "content-type": "application/json",
+            "date": "Mon, 25 May 2026 06:30:48 GMT",
+            "server": "Kestrel",
+            "transfer-encoding": "chunked"
+          },
+          "data": {
+            "success": false,
+            "message": "Subject with id 99999 was not found.",
+            "data": null,
+            "errors": null
+          },
+          "url": "http://localhost/api/subjects/99999",
+          "responseTime": 5,
+          "duration": 5,
+          "size": 92
+        },
+        "error": null,
+        "status": "pass",
+        "assertionResults": [],
+        "testResults": [
+          {
+            "description": "returns ApiResponse not found",
+            "status": "pass",
+            "uid": "Xui8kFCkymjpwgC1507z0"
+          }
+        ],
+        "preRequestTestResults": [],
+        "postResponseTestResults": [],
+        "shouldStopRunnerExecution": false,
+        "runDuration": 0.05206568,
+        "name": "Get By ID Not Found",
+        "path": "Subjects/Get By ID Not Found",
+        "iterationIndex": 0
+      },
+      {
+        "test": {
+          "filename": "Subjects/Update.bru"
+        },
+        "request": {
+          "method": "PUT",
+          "url": "http://localhost:8080/api/subjects/11",
+          "headers": {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+          },
+          "data": "{\n  \"subjectCode\": \"E2U90648733\",\n  \"subjectName\": \"E2E Subject Updated\",\n  \"credit\": 4\n}"
+        },
+        "response": {
+          "status": 200,
+          "statusText": "OK",
+          "headers": {
+            "content-type": "application/json; charset=utf-8",
+            "date": "Mon, 25 May 2026 06:30:48 GMT",
+            "server": "Kestrel",
+            "transfer-encoding": "chunked"
+          },
+          "data": {
+            "success": true,
+            "message": "Subject updated successfully.",
+            "data": {
+              "courses": [],
+              "subjectId": 11,
+              "subjectCode": "E2U90648733",
+              "subjectName": "E2E Subject Updated",
+              "credit": 4
+            }
+          },
+          "url": "http://localhost/api/subjects/11",
+          "responseTime": 16,
+          "duration": 16,
+          "size": 170
+        },
+        "error": null,
+        "status": "pass",
+        "assertionResults": [],
+        "testResults": [
+          {
+            "description": "returns ApiResponse success with updated subject",
+            "status": "pass",
+            "uid": "voTIzrR0d6MKiMEqGVpo7"
+          }
+        ],
+        "preRequestTestResults": [],
+        "postResponseTestResults": [],
+        "shouldStopRunnerExecution": false,
+        "runDuration": 0.06240924,
+        "name": "Update",
+        "path": "Subjects/Update",
+        "iterationIndex": 0
+      },
+      {
+        "test": {
+          "filename": "Subjects/Delete.bru"
+        },
+        "request": {
+          "method": "DELETE",
+          "url": "http://localhost:8080/api/subjects/11",
+          "headers": {
+            "Accept": "application/json",
+            "content-type": null
+          }
+        },
+        "response": {
+          "status": 200,
+          "statusText": "OK",
+          "headers": {
+            "content-type": "application/json; charset=utf-8",
+            "date": "Mon, 25 May 2026 06:30:48 GMT",
+            "server": "Kestrel",
+            "transfer-encoding": "chunked"
+          },
+          "data": {
+            "success": true,
+            "message": "Subject deleted successfully."
+          },
+          "url": "http://localhost/api/subjects/11",
+          "responseTime": 12,
+          "duration": 12,
+          "size": 58
+        },
+        "error": null,
+        "status": "pass",
+        "assertionResults": [],
+        "testResults": [
+          {
+            "description": "returns ApiResponse success for delete",
+            "status": "pass",
+            "uid": "GGakgvK5pDnXwKpUGkLpo"
+          }
+        ],
+        "preRequestTestResults": [],
+        "postResponseTestResults": [],
+        "shouldStopRunnerExecution": false,
+        "runDuration": 0.05773653,
+        "name": "Delete",
+        "path": "Subjects/Delete",
+        "iterationIndex": 0
+      },
+      {
+        "test": {
+          "filename": "Subjects/Get List Advanced.bru"
+        },
+        "request": {
+          "method": "GET",
+          "url": "http://localhost:8080/api/subjects?search=PR&sort=subjectCode&page=1&size=5&fields=subjectId,subjectCode,credit",
+          "headers": {
+            "Accept": "application/json",
+            "content-type": null
+          }
+        },
+        "response": {
+          "status": 200,
+          "statusText": "OK",
+          "headers": {
+            "content-type": "application/json; charset=utf-8",
+            "date": "Mon, 25 May 2026 06:30:48 GMT",
+            "server": "Kestrel",
+            "transfer-encoding": "chunked"
+          },
+          "data": {
+            "success": true,
+            "message": "Subjects retrieved successfully.",
+            "data": {
+              "content": [
+                {
+                  "subjectId": 8,
+                  "subjectCode": "MAS291",
+                  "credit": 3
+                },
+                {
+                  "subjectId": 6,
+                  "subjectCode": "PRJ301",
+                  "credit": 3
+                },
+                {
+                  "subjectId": 1,
+                  "subjectCode": "PRN232",
+                  "credit": 3
+                },
+                {
+                  "subjectId": 2,
+                  "subjectCode": "PRO192",
+                  "credit": 3
+                },
+                {
+                  "subjectId": 7,
+                  "subjectCode": "SWP391",
+                  "credit": 4
+                }
+              ],
+              "pagination": {
+                "page": 1,
+                "pageSize": 5,
+                "totalItems": 5,
+                "totalPages": 1
+              }
+            }
+          },
+          "url": "http://localhost/api/subjects?search=PR&sort=subjectCode&page=1&size=5&fields=subjectId,subjectCode,credit",
+          "responseTime": 17,
+          "duration": 17,
+          "size": 399
+        },
+        "error": null,
+        "status": "pass",
+        "assertionResults": [],
+        "testResults": [
+          {
+            "description": "returns paged ApiResponse for advanced list query",
+            "status": "pass",
+            "uid": "v2tfz9m3Csce2Tvimg6uf"
+          }
+        ],
+        "preRequestTestResults": [],
+        "postResponseTestResults": [],
+        "shouldStopRunnerExecution": false,
+        "runDuration": 0.063075806,
+        "name": "Get List Advanced",
+        "path": "Subjects/Get List Advanced",
+        "iterationIndex": 0
+      }
+    ],
+    "summary": {
+      "totalRequests": 37,
+      "passedRequests": 37,
+      "failedRequests": 0,
+      "errorRequests": 0,
+      "skippedRequests": 0,
+      "totalAssertions": 0,
+      "passedAssertions": 0,
+      "failedAssertions": 0,
+      "totalTests": 37,
+      "passedTests": 37,
+      "failedTests": 0,
+      "totalPreRequestTests": 0,
+      "passedPreRequestTests": 0,
+      "failedPreRequestTests": 0,
+      "totalPostResponseTests": 0,
+      "passedPostResponseTests": 0,
+      "failedPostResponseTests": 0
+    }
+  }
+]

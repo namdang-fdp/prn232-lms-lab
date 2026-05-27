@@ -2,8 +2,8 @@ using AutoMapper;
 using PRN232.LMS.Repositories.Entities;
 using PRN232.LMS.Repositories.Query;
 using PRN232.LMS.Repositories.Repositories;
-using PRN232.LMS.Services.Models;
-using PRN232.LMS.Services.Models.Common;
+using PRN232.LMS.Services.BusinessModels;
+using PRN232.LMS.Services.BusinessModels.Common;
 
 namespace PRN232.LMS.Services.Services;
 
@@ -14,18 +14,18 @@ public class CourseService(
     IGenericRepository<Enrollment> enrollmentRepository,
     IMapper mapper) : LmsServiceBase(mapper), ICourseService
 {
-    public async Task<PagedResultModel<CourseModel>> GetAsync(
-        QueryParametersModel query,
+    public async Task<PagedResultBusinessModel<CourseBusinessModel>> GetAsync(
+        QueryParametersBusinessModel query,
         CancellationToken cancellationToken = default)
     {
         var result = await courseRepository.GetPagedAsync(
             LmsQueryConfigurations.ForCourses(query.Search, query.Sort, query.Expand, Page(query), Size(query)),
             cancellationToken);
 
-        return ToPagedResult<Course, CourseModel>(result);
+        return ToPagedResult<Course, CourseBusinessModel>(result);
     }
 
-    public async Task<CourseModel> GetByIdAsync(int id, CancellationToken cancellationToken = default)
+    public async Task<CourseBusinessModel> GetByIdAsync(int id, CancellationToken cancellationToken = default)
     {
         var course = await courseRepository.GetByIdAsync(
             entity => entity.CourseId == id,
@@ -34,10 +34,33 @@ public class CourseService(
 
         return course is null
             ? throw NotFound("Course", id)
-            : Mapper.Map<CourseModel>(course);
+            : Mapper.Map<CourseBusinessModel>(course);
     }
 
-    public async Task<CourseModel> CreateAsync(CourseModel model, CancellationToken cancellationToken = default)
+    public async Task<PagedResultBusinessModel<EnrollmentBusinessModel>> GetEnrollmentsAsync(
+        int id,
+        QueryParametersBusinessModel query,
+        CancellationToken cancellationToken = default)
+    {
+        if (!await courseRepository.AnyAsync(course => course.CourseId == id, cancellationToken))
+        {
+            throw NotFound("Course", id);
+        }
+
+        var options = LmsQueryConfigurations.ForEnrollments(
+            query.Search,
+            query.Sort,
+            query.Expand,
+            Page(query),
+            Size(query));
+        options.Filter = enrollment => enrollment.CourseId == id;
+
+        var result = await enrollmentRepository.GetPagedAsync(options, cancellationToken);
+
+        return ToPagedResult<Enrollment, EnrollmentBusinessModel>(result);
+    }
+
+    public async Task<CourseBusinessModel> CreateAsync(CourseBusinessModel model, CancellationToken cancellationToken = default)
     {
         await ValidateCourseAsync(model, null, cancellationToken);
 
@@ -49,9 +72,9 @@ public class CourseService(
         return await GetByIdAsync(course.CourseId, cancellationToken);
     }
 
-    public async Task<CourseModel> UpdateAsync(
+    public async Task<CourseBusinessModel> UpdateAsync(
         int id,
-        CourseModel model,
+        CourseBusinessModel model,
         CancellationToken cancellationToken = default)
     {
         var course = await courseRepository.GetByIdAsync(
@@ -97,7 +120,7 @@ public class CourseService(
     }
 
     private async Task ValidateCourseAsync(
-        CourseModel model,
+        CourseBusinessModel model,
         int? existingId,
         CancellationToken cancellationToken)
     {

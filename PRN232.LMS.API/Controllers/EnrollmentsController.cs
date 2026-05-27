@@ -4,8 +4,8 @@ using PRN232.LMS.API.Common.Response;
 using PRN232.LMS.API.Models.Requests;
 using PRN232.LMS.API.Models.Responses;
 using PRN232.LMS.Services.Exceptions;
-using PRN232.LMS.Services.Models;
-using PRN232.LMS.Services.Models.Common;
+using PRN232.LMS.Services.BusinessModels;
+using PRN232.LMS.Services.BusinessModels.Common;
 using PRN232.LMS.Services.Services;
 
 namespace PRN232.LMS.API.Controllers;
@@ -26,10 +26,10 @@ public class EnrollmentsController(IEnrollmentService enrollmentService, IMapper
         [FromQuery] QueryRequest request,
         CancellationToken cancellationToken)
     {
-        var query = mapper.Map<QueryParametersModel>(request);
+        var query = mapper.Map<QueryParametersBusinessModel>(request);
         var result = await enrollmentService.GetAsync(query, cancellationToken);
         var responses = mapper.Map<IReadOnlyList<EnrollmentResponse>>(result.Items);
-        var page = ToPageResponse<EnrollmentResponse, EnrollmentModel>(result, responses, request.Fields);
+        var page = ToPageResponse<EnrollmentResponse, EnrollmentBusinessModel>(result, responses, request.Fields);
 
         return Ok(new ApiResponse<PageResponse<object>>(page, "Enrollments retrieved successfully."));
     }
@@ -69,7 +69,7 @@ public class EnrollmentsController(IEnrollmentService enrollmentService, IMapper
         [FromBody] CreateEnrollmentRequest request,
         CancellationToken cancellationToken)
     {
-        var model = mapper.Map<EnrollmentModel>(request);
+        var model = mapper.Map<EnrollmentBusinessModel>(request);
         var created = await enrollmentService.CreateAsync(model, cancellationToken);
         var response = mapper.Map<EnrollmentResponse>(created);
 
@@ -92,7 +92,7 @@ public class EnrollmentsController(IEnrollmentService enrollmentService, IMapper
         [FromBody] UpdateEnrollmentRequest request,
         CancellationToken cancellationToken)
     {
-        var model = mapper.Map<EnrollmentModel>(request);
+        var model = mapper.Map<EnrollmentBusinessModel>(request);
         var updated = await enrollmentService.UpdateAsync(id, model, cancellationToken);
         var response = mapper.Map<EnrollmentResponse>(updated);
 

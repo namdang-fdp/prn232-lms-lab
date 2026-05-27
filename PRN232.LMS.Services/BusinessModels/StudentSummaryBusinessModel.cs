@@ -1,6 +1,6 @@
-namespace PRN232.LMS.Services.Models;
+namespace PRN232.LMS.Services.BusinessModels;
 
-public class StudentSummaryModel
+public class StudentSummaryBusinessModel
 {
     public int StudentId { get; set; }
     public string FullName { get; set; } = string.Empty;

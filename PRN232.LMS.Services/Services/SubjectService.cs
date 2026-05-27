@@ -2,8 +2,8 @@ using AutoMapper;
 using PRN232.LMS.Repositories.Entities;
 using PRN232.LMS.Repositories.Query;
 using PRN232.LMS.Repositories.Repositories;
-using PRN232.LMS.Services.Models;
-using PRN232.LMS.Services.Models.Common;
+using PRN232.LMS.Services.BusinessModels;
+using PRN232.LMS.Services.BusinessModels.Common;
 
 namespace PRN232.LMS.Services.Services;
 
@@ -12,18 +12,18 @@ public class SubjectService(
     IGenericRepository<Course> courseRepository,
     IMapper mapper) : LmsServiceBase(mapper), ISubjectService
 {
-    public async Task<PagedResultModel<SubjectModel>> GetAsync(
-        QueryParametersModel query,
+    public async Task<PagedResultBusinessModel<SubjectBusinessModel>> GetAsync(
+        QueryParametersBusinessModel query,
         CancellationToken cancellationToken = default)
     {
         var result = await subjectRepository.GetPagedAsync(
             LmsQueryConfigurations.ForSubjects(query.Search, query.Sort, query.Expand, Page(query), Size(query)),
             cancellationToken);
 
-        return ToPagedResult<Subject, SubjectModel>(result);
+        return ToPagedResult<Subject, SubjectBusinessModel>(result);
     }
 
-    public async Task<SubjectModel> GetByIdAsync(int id, CancellationToken cancellationToken = default)
+    public async Task<SubjectBusinessModel> GetByIdAsync(int id, CancellationToken cancellationToken = default)
     {
         var subject = await subjectRepository.GetByIdAsync(
             entity => entity.SubjectId == id,
@@ -32,10 +32,10 @@ public class SubjectService(
 
         return subject is null
             ? throw NotFound("Subject", id)
-            : Mapper.Map<SubjectModel>(subject);
+            : Mapper.Map<SubjectBusinessModel>(subject);
     }
 
-    public async Task<SubjectModel> CreateAsync(SubjectModel model, CancellationToken cancellationToken = default)
+    public async Task<SubjectBusinessModel> CreateAsync(SubjectBusinessModel model, CancellationToken cancellationToken = default)
     {
         await ValidateSubjectAsync(model, null, cancellationToken);
 
@@ -47,9 +47,9 @@ public class SubjectService(
         return await GetByIdAsync(subject.SubjectId, cancellationToken);
     }
 
-    public async Task<SubjectModel> UpdateAsync(
+    public async Task<SubjectBusinessModel> UpdateAsync(
         int id,
-        SubjectModel model,
+        SubjectBusinessModel model,
         CancellationToken cancellationToken = default)
     {
         var subject = await subjectRepository.GetByIdAsync(
@@ -95,7 +95,7 @@ public class SubjectService(
     }
 
     private async Task ValidateSubjectAsync(
-        SubjectModel model,
+        SubjectBusinessModel model,
         int? existingId,
         CancellationToken cancellationToken)
     {

@@ -4,8 +4,8 @@ using PRN232.LMS.API.Common.Response;
 using PRN232.LMS.API.Models.Requests;
 using PRN232.LMS.API.Models.Responses;
 using PRN232.LMS.Services.Exceptions;
-using PRN232.LMS.Services.Models;
-using PRN232.LMS.Services.Models.Common;
+using PRN232.LMS.Services.BusinessModels;
+using PRN232.LMS.Services.BusinessModels.Common;
 using PRN232.LMS.Services.Services;
 
 namespace PRN232.LMS.API.Controllers;
@@ -26,10 +26,10 @@ public class SemestersController(ISemesterService semesterService, IMapper mappe
         [FromQuery] QueryRequest request,
         CancellationToken cancellationToken)
     {
-        var query = mapper.Map<QueryParametersModel>(request);
+        var query = mapper.Map<QueryParametersBusinessModel>(request);
         var result = await semesterService.GetAsync(query, cancellationToken);
         var responses = mapper.Map<IReadOnlyList<SemesterResponse>>(result.Items);
-        var page = ToPageResponse<SemesterResponse, SemesterModel>(result, responses, request.Fields);
+        var page = ToPageResponse<SemesterResponse, SemesterBusinessModel>(result, responses, request.Fields);
 
         return Ok(new ApiResponse<PageResponse<object>>(page, "Semesters retrieved successfully."));
     }
@@ -69,7 +69,7 @@ public class SemestersController(ISemesterService semesterService, IMapper mappe
         [FromBody] CreateSemesterRequest request,
         CancellationToken cancellationToken)
     {
-        var model = mapper.Map<SemesterModel>(request);
+        var model = mapper.Map<SemesterBusinessModel>(request);
         var created = await semesterService.CreateAsync(model, cancellationToken);
         var response = mapper.Map<SemesterResponse>(created);
 
@@ -92,7 +92,7 @@ public class SemestersController(ISemesterService semesterService, IMapper mappe
         [FromBody] UpdateSemesterRequest request,
         CancellationToken cancellationToken)
     {
-        var model = mapper.Map<SemesterModel>(request);
+        var model = mapper.Map<SemesterBusinessModel>(request);
         var updated = await semesterService.UpdateAsync(id, model, cancellationToken);
         var response = mapper.Map<SemesterResponse>(updated);
 

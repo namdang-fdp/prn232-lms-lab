@@ -12,11 +12,20 @@ public static class QueryableExtensions
         RepositoryQueryOptions<TEntity> options)
         where TEntity : class
     {
+        query = query.ApplyFilter(options.Filter);
         query = query.ApplyExpansion(options.Expand, options.Expanders);
         query = query.ApplySearch(options.Search, options.SearchFields);
         query = query.ApplySorting(options.Sort, options.SortFields);
 
         return query;
+    }
+
+    private static IQueryable<TEntity> ApplyFilter<TEntity>(
+        this IQueryable<TEntity> query,
+        Expression<Func<TEntity, bool>>? filter)
+        where TEntity : class
+    {
+        return filter is null ? query : query.Where(filter);
     }
 
     private static IQueryable<TEntity> ApplyExpansion<TEntity>(

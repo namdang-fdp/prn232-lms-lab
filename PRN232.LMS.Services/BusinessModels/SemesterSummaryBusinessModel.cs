@@ -1,6 +1,6 @@
-namespace PRN232.LMS.Services.Models;
+namespace PRN232.LMS.Services.BusinessModels;
 
-public class SemesterSummaryModel
+public class SemesterSummaryBusinessModel
 {
     public int SemesterId { get; set; }
     public string SemesterName { get; set; } = string.Empty;

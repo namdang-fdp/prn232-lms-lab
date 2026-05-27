@@ -1,7 +1,7 @@
 using AutoMapper;
 using PRN232.LMS.Repositories.Query;
 using PRN232.LMS.Services.Exceptions;
-using PRN232.LMS.Services.Models.Common;
+using PRN232.LMS.Services.BusinessModels.Common;
 
 namespace PRN232.LMS.Services.Services;
 
@@ -9,23 +9,23 @@ public abstract class LmsServiceBase(IMapper mapper)
 {
     protected IMapper Mapper { get; } = mapper;
 
-    protected PagedResultModel<TModel> ToPagedResult<TEntity, TModel>(RepositoryPagedResult<TEntity> result)
+    protected PagedResultBusinessModel<TBusinessModel> ToPagedResult<TEntity, TBusinessModel>(RepositoryPagedResult<TEntity> result)
     {
-        return new PagedResultModel<TModel>
+        return new PagedResultBusinessModel<TBusinessModel>
         {
-            Items = Mapper.Map<IReadOnlyList<TModel>>(result.Items),
+            Items = Mapper.Map<IReadOnlyList<TBusinessModel>>(result.Items),
             Page = result.Page,
             PageSize = result.PageSize,
             TotalItems = result.TotalItems
         };
     }
 
-    protected static int Page(QueryParametersModel query)
+    protected static int Page(QueryParametersBusinessModel query)
     {
         return query.Page < 1 ? 1 : query.Page;
     }
 
-    protected static int Size(QueryParametersModel query)
+    protected static int Size(QueryParametersBusinessModel query)
     {
         return query.Size switch
         {

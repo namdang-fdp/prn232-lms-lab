@@ -4,6 +4,7 @@ namespace PRN232.LMS.Repositories.Query;
 
 public class RepositoryQueryOptions<TEntity> where TEntity : class
 {
+    public Expression<Func<TEntity, bool>>? Filter { get; set; }
     public string? Search { get; set; }
     public string? Sort { get; set; }
     public string? Expand { get; set; }
