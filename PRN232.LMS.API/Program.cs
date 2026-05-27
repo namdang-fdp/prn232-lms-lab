@@ -1,4 +1,4 @@
-using System.Text.Json.Serialization;
+using System.Reflection;
 using Microsoft.AspNetCore.Mvc;
 using PRN232.LMS.API.Common.Middleware;
 using PRN232.LMS.API.Common.Response;
@@ -8,11 +8,7 @@ using PRN232.LMS.Services.Mapping;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers()
-    .AddJsonOptions(options =>
-    {
-        options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
-    });
+builder.Services.AddControllers();
 
 builder.Services.Configure<ApiBehaviorOptions>(options =>
 {
@@ -44,7 +40,12 @@ builder.Services.AddAutoMapper(
     typeof(RepositoryMappingProfile).Assembly);
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    options.IncludeXmlComments(xmlPath);
+});
 
 var app = builder.Build();
 

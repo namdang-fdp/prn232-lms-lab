@@ -10,9 +10,17 @@ using PRN232.LMS.Services.Services;
 namespace PRN232.LMS.API.Controllers;
 
 [Route("api/enrollments")]
+[Produces("application/json")]
 public class EnrollmentsController(IEnrollmentService enrollmentService, IMapper mapper) : LmsControllerBase
 {
+    /// <summary>
+    /// Gets a paged list of enrollments.
+    /// </summary>
+    /// <remarks>Supports search, sort, paging, field selection, and relationship expansion.</remarks>
     [HttpGet]
+    [ProducesResponseType(typeof(ApiResponse<PageResponse<object>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<ApiResponse<PageResponse<object>>>> GetEnrollments(
         [FromQuery] QueryRequest request,
         CancellationToken cancellationToken)
@@ -25,7 +33,13 @@ public class EnrollmentsController(IEnrollmentService enrollmentService, IMapper
         return Ok(new ApiResponse<PageResponse<object>>(page, "Enrollments retrieved successfully."));
     }
 
+    /// <summary>
+    /// Gets an enrollment by identifier with related student, course, subject, and semester data.
+    /// </summary>
     [HttpGet("{id:int}")]
+    [ProducesResponseType(typeof(ApiResponse<EnrollmentResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<ApiResponse<EnrollmentResponse>>> GetEnrollment(
         int id,
         CancellationToken cancellationToken)
@@ -36,7 +50,13 @@ public class EnrollmentsController(IEnrollmentService enrollmentService, IMapper
         return Ok(new ApiResponse<EnrollmentResponse>(response, "Enrollment retrieved successfully."));
     }
 
+    /// <summary>
+    /// Creates an enrollment.
+    /// </summary>
     [HttpPost]
+    [ProducesResponseType(typeof(ApiResponse<EnrollmentResponse>), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<ApiResponse<EnrollmentResponse>>> CreateEnrollment(
         [FromBody] CreateEnrollmentRequest request,
         CancellationToken cancellationToken)
@@ -51,7 +71,14 @@ public class EnrollmentsController(IEnrollmentService enrollmentService, IMapper
             new ApiResponse<EnrollmentResponse>(response, "Enrollment created successfully."));
     }
 
+    /// <summary>
+    /// Updates an enrollment.
+    /// </summary>
     [HttpPut("{id:int}")]
+    [ProducesResponseType(typeof(ApiResponse<EnrollmentResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<ApiResponse<EnrollmentResponse>>> UpdateEnrollment(
         int id,
         [FromBody] UpdateEnrollmentRequest request,
@@ -64,7 +91,14 @@ public class EnrollmentsController(IEnrollmentService enrollmentService, IMapper
         return Ok(new ApiResponse<EnrollmentResponse>(response, "Enrollment updated successfully."));
     }
 
+    /// <summary>
+    /// Deletes an enrollment.
+    /// </summary>
     [HttpDelete("{id:int}")]
+    [ProducesResponseType(typeof(ApiResponse<object?>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<ApiResponse<object?>>> DeleteEnrollment(
         int id,
         CancellationToken cancellationToken)

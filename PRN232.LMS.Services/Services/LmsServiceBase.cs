@@ -54,11 +54,11 @@ public abstract class LmsServiceBase(IMapper mapper)
 
     protected static ServiceException Duplicate(string message)
     {
-        return new ServiceException(ServiceErrorCode.DuplicateResource, message, 409);
+        return new ServiceException(ServiceErrorCode.DuplicateResource, message, 400);
     }
 
     protected static ServiceException Conflict(string message)
     {
-        return new ServiceException(ServiceErrorCode.Conflict, message, 409);
+        return new ServiceException(ServiceErrorCode.Conflict, message, 400);
     }
 }

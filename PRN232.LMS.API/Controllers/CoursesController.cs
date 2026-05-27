@@ -10,9 +10,17 @@ using PRN232.LMS.Services.Services;
 namespace PRN232.LMS.API.Controllers;
 
 [Route("api/courses")]
+[Produces("application/json")]
 public class CoursesController(ICourseService courseService, IMapper mapper) : LmsControllerBase
 {
+    /// <summary>
+    /// Gets a paged list of courses.
+    /// </summary>
+    /// <remarks>Supports search, sort, paging, field selection, and relationship expansion.</remarks>
     [HttpGet]
+    [ProducesResponseType(typeof(ApiResponse<PageResponse<object>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<ApiResponse<PageResponse<object>>>> GetCourses(
         [FromQuery] QueryRequest request,
         CancellationToken cancellationToken)
@@ -25,7 +33,13 @@ public class CoursesController(ICourseService courseService, IMapper mapper) : L
         return Ok(new ApiResponse<PageResponse<object>>(page, "Courses retrieved successfully."));
     }
 
+    /// <summary>
+    /// Gets a course by identifier with related semester, subject, and enrollment data.
+    /// </summary>
     [HttpGet("{id:int}")]
+    [ProducesResponseType(typeof(ApiResponse<CourseResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<ApiResponse<CourseResponse>>> GetCourse(
         int id,
         CancellationToken cancellationToken)
@@ -36,7 +50,13 @@ public class CoursesController(ICourseService courseService, IMapper mapper) : L
         return Ok(new ApiResponse<CourseResponse>(response, "Course retrieved successfully."));
     }
 
+    /// <summary>
+    /// Creates a course.
+    /// </summary>
     [HttpPost]
+    [ProducesResponseType(typeof(ApiResponse<CourseResponse>), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<ApiResponse<CourseResponse>>> CreateCourse(
         [FromBody] CreateCourseRequest request,
         CancellationToken cancellationToken)
@@ -51,7 +71,14 @@ public class CoursesController(ICourseService courseService, IMapper mapper) : L
             new ApiResponse<CourseResponse>(response, "Course created successfully."));
     }
 
+    /// <summary>
+    /// Updates a course.
+    /// </summary>
     [HttpPut("{id:int}")]
+    [ProducesResponseType(typeof(ApiResponse<CourseResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<ApiResponse<CourseResponse>>> UpdateCourse(
         int id,
         [FromBody] UpdateCourseRequest request,
@@ -64,7 +91,14 @@ public class CoursesController(ICourseService courseService, IMapper mapper) : L
         return Ok(new ApiResponse<CourseResponse>(response, "Course updated successfully."));
     }
 
+    /// <summary>
+    /// Deletes a course.
+    /// </summary>
     [HttpDelete("{id:int}")]
+    [ProducesResponseType(typeof(ApiResponse<object?>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<ApiResponse<object?>>> DeleteCourse(
         int id,
         CancellationToken cancellationToken)

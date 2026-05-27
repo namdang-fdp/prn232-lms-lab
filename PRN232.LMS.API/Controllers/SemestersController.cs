@@ -10,9 +10,17 @@ using PRN232.LMS.Services.Services;
 namespace PRN232.LMS.API.Controllers;
 
 [Route("api/semesters")]
+[Produces("application/json")]
 public class SemestersController(ISemesterService semesterService, IMapper mapper) : LmsControllerBase
 {
+    /// <summary>
+    /// Gets a paged list of semesters.
+    /// </summary>
+    /// <remarks>Supports search, sort, paging, field selection, and relationship expansion.</remarks>
     [HttpGet]
+    [ProducesResponseType(typeof(ApiResponse<PageResponse<object>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<ApiResponse<PageResponse<object>>>> GetSemesters(
         [FromQuery] QueryRequest request,
         CancellationToken cancellationToken)
@@ -25,7 +33,13 @@ public class SemestersController(ISemesterService semesterService, IMapper mappe
         return Ok(new ApiResponse<PageResponse<object>>(page, "Semesters retrieved successfully."));
     }
 
+    /// <summary>
+    /// Gets a semester by identifier with related course and subject data.
+    /// </summary>
     [HttpGet("{id:int}")]
+    [ProducesResponseType(typeof(ApiResponse<SemesterResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<ApiResponse<SemesterResponse>>> GetSemester(
         int id,
         CancellationToken cancellationToken)
@@ -36,7 +50,13 @@ public class SemestersController(ISemesterService semesterService, IMapper mappe
         return Ok(new ApiResponse<SemesterResponse>(response, "Semester retrieved successfully."));
     }
 
+    /// <summary>
+    /// Creates a semester.
+    /// </summary>
     [HttpPost]
+    [ProducesResponseType(typeof(ApiResponse<SemesterResponse>), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<ApiResponse<SemesterResponse>>> CreateSemester(
         [FromBody] CreateSemesterRequest request,
         CancellationToken cancellationToken)
@@ -51,7 +71,14 @@ public class SemestersController(ISemesterService semesterService, IMapper mappe
             new ApiResponse<SemesterResponse>(response, "Semester created successfully."));
     }
 
+    /// <summary>
+    /// Updates a semester.
+    /// </summary>
     [HttpPut("{id:int}")]
+    [ProducesResponseType(typeof(ApiResponse<SemesterResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<ApiResponse<SemesterResponse>>> UpdateSemester(
         int id,
         [FromBody] UpdateSemesterRequest request,
@@ -64,7 +91,14 @@ public class SemestersController(ISemesterService semesterService, IMapper mappe
         return Ok(new ApiResponse<SemesterResponse>(response, "Semester updated successfully."));
     }
 
+    /// <summary>
+    /// Deletes a semester.
+    /// </summary>
     [HttpDelete("{id:int}")]
+    [ProducesResponseType(typeof(ApiResponse<object?>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<ApiResponse<object?>>> DeleteSemester(
         int id,
         CancellationToken cancellationToken)
