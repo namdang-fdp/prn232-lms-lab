@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using PRN232.LMS.API.Common.Response;
 using PRN232.LMS.API.Models.Requests;
 using PRN232.LMS.API.Models.Responses;
+using PRN232.LMS.Services.Exceptions;
 using PRN232.LMS.Services.Models;
 using PRN232.LMS.Services.Models.Common;
 using PRN232.LMS.Services.Services;
@@ -44,10 +45,17 @@ public class SubjectsController(ISubjectService subjectService, IMapper mapper) 
         int id,
         CancellationToken cancellationToken)
     {
-        var subject = await subjectService.GetByIdAsync(id, cancellationToken);
-        var response = mapper.Map<SubjectResponse>(subject);
+        try
+        {
+            var subject = await subjectService.GetByIdAsync(id, cancellationToken);
+            var response = mapper.Map<SubjectResponse>(subject);
 
-        return Ok(new ApiResponse<SubjectResponse>(response, "Subject retrieved successfully."));
+            return Ok(new ApiResponse<SubjectResponse>(response, "Subject retrieved successfully."));
+        }
+        catch (ServiceException exception) when (exception.StatusCode == StatusCodes.Status404NotFound)
+        {
+            return NotFoundResponse(exception);
+        }
     }
 
     /// <summary>

@@ -2,7 +2,7 @@ services:
   api:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: PRN232.LMS.API/Dockerfile
     image: prn232-lms-api:1.0.0
     container_name: lms-api
     ports:

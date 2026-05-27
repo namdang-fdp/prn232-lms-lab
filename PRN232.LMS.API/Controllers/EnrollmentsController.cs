@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using PRN232.LMS.API.Common.Response;
 using PRN232.LMS.API.Models.Requests;
 using PRN232.LMS.API.Models.Responses;
+using PRN232.LMS.Services.Exceptions;
 using PRN232.LMS.Services.Models;
 using PRN232.LMS.Services.Models.Common;
 using PRN232.LMS.Services.Services;
@@ -44,10 +45,17 @@ public class EnrollmentsController(IEnrollmentService enrollmentService, IMapper
         int id,
         CancellationToken cancellationToken)
     {
-        var enrollment = await enrollmentService.GetByIdAsync(id, cancellationToken);
-        var response = mapper.Map<EnrollmentResponse>(enrollment);
+        try
+        {
+            var enrollment = await enrollmentService.GetByIdAsync(id, cancellationToken);
+            var response = mapper.Map<EnrollmentResponse>(enrollment);
 
-        return Ok(new ApiResponse<EnrollmentResponse>(response, "Enrollment retrieved successfully."));
+            return Ok(new ApiResponse<EnrollmentResponse>(response, "Enrollment retrieved successfully."));
+        }
+        catch (ServiceException exception) when (exception.StatusCode == StatusCodes.Status404NotFound)
+        {
+            return NotFoundResponse(exception);
+        }
     }
 
     /// <summary>

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using PRN232.LMS.API.Common.Response;
 using PRN232.LMS.API.Models.Requests;
 using PRN232.LMS.API.Models.Responses;
+using PRN232.LMS.Services.Exceptions;
 using PRN232.LMS.Services.Models;
 using PRN232.LMS.Services.Models.Common;
 using PRN232.LMS.Services.Services;
@@ -44,10 +45,17 @@ public class SemestersController(ISemesterService semesterService, IMapper mappe
         int id,
         CancellationToken cancellationToken)
     {
-        var semester = await semesterService.GetByIdAsync(id, cancellationToken);
-        var response = mapper.Map<SemesterResponse>(semester);
+        try
+        {
+            var semester = await semesterService.GetByIdAsync(id, cancellationToken);
+            var response = mapper.Map<SemesterResponse>(semester);
 
-        return Ok(new ApiResponse<SemesterResponse>(response, "Semester retrieved successfully."));
+            return Ok(new ApiResponse<SemesterResponse>(response, "Semester retrieved successfully."));
+        }
+        catch (ServiceException exception) when (exception.StatusCode == StatusCodes.Status404NotFound)
+        {
+            return NotFoundResponse(exception);
+        }
     }
 
     /// <summary>

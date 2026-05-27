@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using PRN232.LMS.API.Common.Middleware;
 using PRN232.LMS.API.Common.Response;
@@ -8,7 +9,8 @@ using PRN232.LMS.Services.Mapping;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
 builder.Services.Configure<ApiBehaviorOptions>(options =>
 {
