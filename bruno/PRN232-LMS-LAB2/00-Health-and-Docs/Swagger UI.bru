@@ -1,0 +1,21 @@
+meta {
+  name: Swagger UI
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{swaggerUrl}}
+  body: none
+  auth: none
+}
+
+headers {
+  Accept: text/html
+}
+
+tests {
+  test("swagger responds with success or redirect", function() {
+    expect([200, 301, 302, 307, 308]).to.include(res.status);
+  });
+}

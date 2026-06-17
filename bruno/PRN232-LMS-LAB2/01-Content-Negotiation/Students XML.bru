@@ -1,0 +1,21 @@
+meta {
+  name: Students XML
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/v1/students?page=1&size=3
+  body: none
+  auth: none
+}
+
+headers {
+  Accept: application/xml
+}
+
+tests {
+  test("returns XML response", function() {
+    expect(res.status).to.equal(200);
+  });
+}

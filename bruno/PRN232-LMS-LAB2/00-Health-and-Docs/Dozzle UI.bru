@@ -1,0 +1,26 @@
+meta {
+  name: Dozzle UI
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{dozzleUrl}}
+  body: none
+  auth: none
+}
+
+headers {
+  Accept: text/html
+}
+
+docs {
+  Open this request or visit http://localhost:9999 in a browser after Docker Compose starts.
+  Dozzle reads Docker logs through a read-only Docker socket mount.
+}
+
+tests {
+  test("dozzle responds with success or redirect", function() {
+    expect([200, 301, 302, 307, 308]).to.include(res.status);
+  });
+}
