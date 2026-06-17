@@ -1,0 +1,44 @@
+meta {
+  name: Login user success
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/api/v1/auth/login
+  body: json
+  auth: none
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "username": "{{userUsername}}",
+    "password": "{{userPassword}}"
+  }
+}
+
+tests {
+  test("user login returns token pair without sensitive hashes", function() {
+    expect(res.status).to.equal(200);
+    expect(res.body).to.have.property("success", true);
+    expect(res.body.data.accessToken).to.be.a("string").that.is.not.empty;
+    expect(res.body.data.refreshToken).to.be.a("string").that.is.not.empty;
+
+    const bodyText = JSON.stringify(res.body).toLowerCase();
+    expect(bodyText).to.not.include("passwordhash");
+    expect(bodyText).to.not.include("refreshtokenhash");
+    expect(bodyText).to.not.include("tokenhash");
+  });
+}
+
+script:post-response {
+  if (res.status === 200 && res.body && res.body.data) {
+    bru.setEnvVar("userAccessToken", res.body.data.accessToken);
+    bru.setEnvVar("userRefreshToken", res.body.data.refreshToken);
+  }
+}
