@@ -1,0 +1,33 @@
+meta {
+  name: Named route create smoke
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseUrl}}/api/v1/students
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{adminAccessToken}}
+  X-Request-Id: bruno-created-route-smoke
+  Accept: application/json
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "fullName": "Bruno Route Student",
+    "email": "bruno.route@example.com",
+    "dateOfBirth": "2000-01-01"
+  }
+}
+
+tests {
+  test("create smoke reaches action and named route is valid", function() {
+    expect(res.status).to.not.equal(401);
+    expect([201, 400]).to.include(res.status);
+  });
+}

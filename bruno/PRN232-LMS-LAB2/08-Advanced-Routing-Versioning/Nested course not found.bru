@@ -1,0 +1,22 @@
+meta {
+  name: Nested course not found
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/v1/courses/999999/students?page=1&size=5
+  body: none
+  auth: none
+}
+
+headers {
+  Accept: application/json
+}
+
+tests {
+  test("missing course returns 404", function() {
+    expect(res.status).to.equal(404);
+    expect(res.body).to.have.property("success", false);
+  });
+}

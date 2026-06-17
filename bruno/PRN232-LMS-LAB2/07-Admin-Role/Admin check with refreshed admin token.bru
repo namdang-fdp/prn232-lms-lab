@@ -1,0 +1,23 @@
+meta {
+  name: Admin check with refreshed admin token
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/api/v1/auth/admin-check
+  body: none
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{newAdminAccessToken}}
+  Accept: application/json
+}
+
+tests {
+  test("refreshed admin token passes admin endpoint", function() {
+    expect(res.status).to.equal(200);
+    expect(res.body).to.have.property("success", true);
+  });
+}

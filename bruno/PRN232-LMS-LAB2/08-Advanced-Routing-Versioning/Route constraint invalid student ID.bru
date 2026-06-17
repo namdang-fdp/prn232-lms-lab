@@ -1,0 +1,21 @@
+meta {
+  name: Route constraint invalid student ID
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/api/v1/students/abc
+  body: none
+  auth: none
+}
+
+headers {
+  Accept: application/json
+}
+
+tests {
+  test("non-integer id does not call int id action", function() {
+    expect(res.status).to.equal(404);
+  });
+}

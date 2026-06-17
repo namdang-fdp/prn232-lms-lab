@@ -1,0 +1,23 @@
+meta {
+  name: Admin check with admin token
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/api/v1/auth/admin-check
+  body: none
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{adminAccessToken}}
+  Accept: application/json
+}
+
+tests {
+  test("admin token passes admin endpoint", function() {
+    expect(res.status).to.equal(200);
+    expect(res.body).to.have.property("success", true);
+  });
+}
