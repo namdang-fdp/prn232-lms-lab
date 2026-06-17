@@ -1,0 +1,24 @@
+meta {
+  name: v1 Students query features
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/api/v1/students?page=1&size=3&search=student&sort=fullName&fields=studentId,fullName,email&expand=enrollments
+  body: none
+  auth: none
+}
+
+headers {
+  Accept: application/json
+}
+
+tests {
+  test("returns shaped student page", function() {
+    expect(res.status).to.equal(200);
+    expect(res.body).to.have.property("success", true);
+    expect(res.body.data).to.have.property("pagination");
+    expect(res.body.data.content).to.be.an("array");
+  });
+}

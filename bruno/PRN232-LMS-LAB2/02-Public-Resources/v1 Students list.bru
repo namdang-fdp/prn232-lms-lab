@@ -1,0 +1,24 @@
+meta {
+  name: v1 Students list
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/v1/students?page=1&size=3
+  body: none
+  auth: none
+}
+
+headers {
+  Accept: application/json
+}
+
+tests {
+  test("returns v1 students page", function() {
+    expect(res.status).to.equal(200);
+    expect(res.body).to.have.property("success", true);
+    expect(res.body.data).to.have.property("pagination");
+    expect(res.body.data.content).to.be.an("array");
+  });
+}
