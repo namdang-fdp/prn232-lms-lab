@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "PRN232 LMS LAB 2 Smoke Tests",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}
