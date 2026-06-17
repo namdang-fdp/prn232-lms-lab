@@ -9,8 +9,13 @@ services:
       - "8080:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=${DB_CONNECTION_STRING}
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=lms_db;Username=admin;Password=admin
       - ConnectionStrings__Redis=redis:6379
+      - Jwt__Issuer=PRN232.LMS
+      - Jwt__Audience=PRN232.LMS.Client
+      - Jwt__Secret=PRN232-LMS-Docker-Jwt-Secret-For-Lab-Only-Change-Me-2026
+      - Jwt__AccessTokenMinutes=30
+      - Jwt__RefreshTokenDays=7
     depends_on:
       - postgres
       - redis
@@ -22,9 +27,9 @@ services:
     container_name: lms-postgres
     restart: unless-stopped
     environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: lms_db
     ports:
       - "5432:5432"
     volumes:
@@ -38,6 +43,17 @@ services:
     restart: unless-stopped
     ports:
       - "6379:6379"
+    networks:
+      - lms_network
+
+  dozzle:
+    image: amir20/dozzle:latest
+    container_name: lms-dozzle
+    restart: unless-stopped
+    ports:
+      - "9999:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
       - lms_network
 
