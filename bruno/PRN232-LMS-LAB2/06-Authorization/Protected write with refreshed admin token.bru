@@ -1,0 +1,32 @@
+meta {
+  name: Protected write with refreshed admin token
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/api/v1/subjects
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{newAdminAccessToken}}
+  Accept: application/json
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "subjectCode": "LAB998",
+    "subjectName": "Authorization Smoke Refreshed",
+    "credit": 3
+  }
+}
+
+tests {
+  test("refreshed token reaches protected create action", function() {
+    expect(res.status).to.not.equal(401);
+    expect([201, 400]).to.include(res.status);
+  });
+}

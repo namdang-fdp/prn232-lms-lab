@@ -1,0 +1,31 @@
+meta {
+  name: Protected write without token
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/v1/subjects
+  body: json
+  auth: none
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "subjectCode": "LAB999",
+    "subjectName": "Authorization Smoke",
+    "credit": 3
+  }
+}
+
+tests {
+  test("protected write without token returns 401", function() {
+    expect(res.status).to.equal(401);
+    expect(res.body).to.have.property("success", false);
+  });
+}

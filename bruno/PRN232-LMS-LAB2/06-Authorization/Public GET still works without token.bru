@@ -1,0 +1,22 @@
+meta {
+  name: Public GET still works without token
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/api/v1/students?page=1&size=3
+  body: none
+  auth: none
+}
+
+headers {
+  Accept: application/json
+}
+
+tests {
+  test("public GET does not require token", function() {
+    expect(res.status).to.equal(200);
+    expect(res.body).to.have.property("success", true);
+  });
+}
