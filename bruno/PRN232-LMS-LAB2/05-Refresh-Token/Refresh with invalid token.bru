@@ -1,0 +1,30 @@
+meta {
+  name: Refresh with invalid token
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/api/v1/auth/refresh-token
+  body: json
+  auth: none
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "refreshToken": "invalid-refresh-token"
+  }
+}
+
+tests {
+  test("invalid refresh token returns safe failure", function() {
+    expect([400, 401]).to.include(res.status);
+    const bodyText = JSON.stringify(res.body).toLowerCase();
+    expect(bodyText).to.not.include("tokenhash");
+  });
+}
