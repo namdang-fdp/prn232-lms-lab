@@ -11,7 +11,7 @@ using PRN232.LMS.Services.Services;
 namespace PRN232.LMS.API.Controllers;
 
 [Route("api/courses")]
-[Produces("application/json")]
+[Produces("application/json", "application/xml")]
 public class CoursesController(ICourseService courseService, IMapper mapper) : LmsControllerBase
 {
     /// <summary>
