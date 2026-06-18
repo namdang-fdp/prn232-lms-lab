@@ -1,4 +1,6 @@
 using AutoMapper;
+using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PRN232.LMS.API.Common.Response;
 using PRN232.LMS.API.Models.Requests;
@@ -10,7 +12,8 @@ using PRN232.LMS.Services.Services;
 
 namespace PRN232.LMS.API.Controllers;
 
-[Route("api/students")]
+[ApiVersion(1.0)]
+[Route("api/v{version:apiVersion}/students")]
 [Produces("application/json", "application/xml")]
 public class StudentsController(IStudentService studentService, IMapper mapper) : LmsControllerBase
 {
@@ -37,12 +40,12 @@ public class StudentsController(IStudentService studentService, IMapper mapper) 
     /// <summary>
     /// Gets a student by identifier with related enrollment and course data.
     /// </summary>
-    [HttpGet("{id:int}")]
+    [HttpGet("{id:int}", Name = "GetStudentByIdV1")]
     [ProducesResponseType(typeof(ApiResponse<StudentResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<ApiResponse<StudentResponse>>> GetStudent(
-        int id,
+        [FromRoute] int id,
         CancellationToken cancellationToken)
     {
         try
@@ -62,20 +65,24 @@ public class StudentsController(IStudentService studentService, IMapper mapper) 
     /// Creates a student.
     /// </summary>
     [HttpPost]
+    [Authorize]
     [ProducesResponseType(typeof(ApiResponse<StudentResponse>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<ApiResponse<StudentResponse>>> CreateStudent(
         [FromBody] CreateStudentRequest request,
+        [FromHeader(Name = "X-Request-Id")] string? requestId,
         CancellationToken cancellationToken)
     {
+        _ = requestId;
+
         var model = mapper.Map<StudentBusinessModel>(request);
         var created = await studentService.CreateAsync(model, cancellationToken);
         var response = mapper.Map<StudentResponse>(created);
 
-        return CreatedAtAction(
-            nameof(GetStudent),
-            new { id = response.StudentId },
+        return CreatedAtRoute(
+            "GetStudentByIdV1",
+            new { version = "1", id = response.StudentId },
             new ApiResponse<StudentResponse>(response, "Student created successfully."));
     }
 
@@ -83,12 +90,13 @@ public class StudentsController(IStudentService studentService, IMapper mapper) 
     /// Updates a student.
     /// </summary>
     [HttpPut("{id:int}")]
+    [Authorize]
     [ProducesResponseType(typeof(ApiResponse<StudentResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<ApiResponse<StudentResponse>>> UpdateStudent(
-        int id,
+        [FromRoute] int id,
         [FromBody] UpdateStudentRequest request,
         CancellationToken cancellationToken)
     {
@@ -103,12 +111,13 @@ public class StudentsController(IStudentService studentService, IMapper mapper) 
     /// Deletes a student.
     /// </summary>
     [HttpDelete("{id:int}")]
+    [Authorize]
     [ProducesResponseType(typeof(ApiResponse<object?>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<ApiResponse<object?>>> DeleteStudent(
-        int id,
+        [FromRoute] int id,
         CancellationToken cancellationToken)
     {
         await studentService.DeleteAsync(id, cancellationToken);

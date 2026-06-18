@@ -1,4 +1,6 @@
 using AutoMapper;
+using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PRN232.LMS.API.Common.Response;
 using PRN232.LMS.API.Models.Requests;
@@ -10,7 +12,8 @@ using PRN232.LMS.Services.Services;
 
 namespace PRN232.LMS.API.Controllers;
 
-[Route("api/courses")]
+[ApiVersion(1.0)]
+[Route("api/v{version:apiVersion}/courses")]
 [Produces("application/json", "application/xml")]
 public class CoursesController(ICourseService courseService, IMapper mapper) : LmsControllerBase
 {
@@ -37,12 +40,12 @@ public class CoursesController(ICourseService courseService, IMapper mapper) : L
     /// <summary>
     /// Gets a course by identifier with related semester, subject, and enrollment data.
     /// </summary>
-    [HttpGet("{id:int}")]
+    [HttpGet("{id:int}", Name = "GetCourseByIdV1")]
     [ProducesResponseType(typeof(ApiResponse<CourseResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<ApiResponse<CourseResponse>>> GetCourse(
-        int id,
+        [FromRoute] int id,
         CancellationToken cancellationToken)
     {
         try
@@ -68,7 +71,7 @@ public class CoursesController(ICourseService courseService, IMapper mapper) : L
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<ApiResponse<PageResponse<object>>>> GetEnrollmentsByCourse(
-        int id,
+        [FromRoute] int id,
         [FromQuery] QueryRequest request,
         CancellationToken cancellationToken)
     {
@@ -88,9 +91,39 @@ public class CoursesController(ICourseService courseService, IMapper mapper) : L
     }
 
     /// <summary>
+    /// Gets a paged list of students enrolled in a course.
+    /// </summary>
+    /// <remarks>Uses an integer route constraint for courseId and supports search, sort, paging, field selection, and relationship expansion.</remarks>
+    [HttpGet("{courseId:int}/students", Name = "GetStudentsByCourseId")]
+    [ProducesResponseType(typeof(ApiResponse<PageResponse<object>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<ApiResponse<PageResponse<object>>>> GetStudentsByCourse(
+        [FromRoute] int courseId,
+        [FromQuery] QueryRequest request,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            var query = mapper.Map<QueryParametersBusinessModel>(request);
+            var result = await courseService.GetStudentsAsync(courseId, query, cancellationToken);
+            var responses = mapper.Map<IReadOnlyList<StudentResponse>>(result.Items);
+            var page = ToPageResponse<StudentResponse, StudentBusinessModel>(result, responses, request.Fields);
+
+            return Ok(new ApiResponse<PageResponse<object>>(page, "Course students retrieved successfully."));
+        }
+        catch (ServiceException exception) when (exception.StatusCode == StatusCodes.Status404NotFound)
+        {
+            return NotFoundResponse(exception);
+        }
+    }
+
+    /// <summary>
     /// Creates a course.
     /// </summary>
     [HttpPost]
+    [Authorize]
     [ProducesResponseType(typeof(ApiResponse<CourseResponse>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status500InternalServerError)]
@@ -102,9 +135,9 @@ public class CoursesController(ICourseService courseService, IMapper mapper) : L
         var created = await courseService.CreateAsync(model, cancellationToken);
         var response = mapper.Map<CourseResponse>(created);
 
-        return CreatedAtAction(
-            nameof(GetCourse),
-            new { id = response.CourseId },
+        return CreatedAtRoute(
+            "GetCourseByIdV1",
+            new { version = "1", id = response.CourseId },
             new ApiResponse<CourseResponse>(response, "Course created successfully."));
     }
 
@@ -112,12 +145,13 @@ public class CoursesController(ICourseService courseService, IMapper mapper) : L
     /// Updates a course.
     /// </summary>
     [HttpPut("{id:int}")]
+    [Authorize]
     [ProducesResponseType(typeof(ApiResponse<CourseResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<ApiResponse<CourseResponse>>> UpdateCourse(
-        int id,
+        [FromRoute] int id,
         [FromBody] UpdateCourseRequest request,
         CancellationToken cancellationToken)
     {
@@ -132,12 +166,13 @@ public class CoursesController(ICourseService courseService, IMapper mapper) : L
     /// Deletes a course.
     /// </summary>
     [HttpDelete("{id:int}")]
+    [Authorize]
     [ProducesResponseType(typeof(ApiResponse<object?>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<ApiResponse<object?>>> DeleteCourse(
-        int id,
+        [FromRoute] int id,
         CancellationToken cancellationToken)
     {
         await courseService.DeleteAsync(id, cancellationToken);

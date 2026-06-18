@@ -35,5 +35,7 @@ public class RepositoryMappingProfile : Profile
         CreateMap<EnrollmentBusinessModel, Enrollment>()
             .ForMember(destination => destination.Student, options => options.Ignore())
             .ForMember(destination => destination.Course, options => options.Ignore());
+
+        CreateMap<User, UserBusinessModel>();
     }
 }

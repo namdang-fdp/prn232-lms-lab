@@ -1,4 +1,6 @@
 using AutoMapper;
+using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PRN232.LMS.API.Common.Response;
 using PRN232.LMS.API.Models.Requests;
@@ -10,7 +12,8 @@ using PRN232.LMS.Services.Services;
 
 namespace PRN232.LMS.API.Controllers;
 
-[Route("api/enrollments")]
+[ApiVersion(1.0)]
+[Route("api/v{version:apiVersion}/enrollments")]
 [Produces("application/json", "application/xml")]
 public class EnrollmentsController(IEnrollmentService enrollmentService, IMapper mapper) : LmsControllerBase
 {
@@ -37,12 +40,12 @@ public class EnrollmentsController(IEnrollmentService enrollmentService, IMapper
     /// <summary>
     /// Gets an enrollment by identifier with related student, course, subject, and semester data.
     /// </summary>
-    [HttpGet("{id:int}")]
+    [HttpGet("{id:int}", Name = "GetEnrollmentByIdV1")]
     [ProducesResponseType(typeof(ApiResponse<EnrollmentResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<ApiResponse<EnrollmentResponse>>> GetEnrollment(
-        int id,
+        [FromRoute] int id,
         CancellationToken cancellationToken)
     {
         try
@@ -62,6 +65,7 @@ public class EnrollmentsController(IEnrollmentService enrollmentService, IMapper
     /// Creates an enrollment.
     /// </summary>
     [HttpPost]
+    [Authorize]
     [ProducesResponseType(typeof(ApiResponse<EnrollmentResponse>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status500InternalServerError)]
@@ -73,9 +77,9 @@ public class EnrollmentsController(IEnrollmentService enrollmentService, IMapper
         var created = await enrollmentService.CreateAsync(model, cancellationToken);
         var response = mapper.Map<EnrollmentResponse>(created);
 
-        return CreatedAtAction(
-            nameof(GetEnrollment),
-            new { id = response.EnrollmentId },
+        return CreatedAtRoute(
+            "GetEnrollmentByIdV1",
+            new { version = "1", id = response.EnrollmentId },
             new ApiResponse<EnrollmentResponse>(response, "Enrollment created successfully."));
     }
 
@@ -83,12 +87,13 @@ public class EnrollmentsController(IEnrollmentService enrollmentService, IMapper
     /// Updates an enrollment.
     /// </summary>
     [HttpPut("{id:int}")]
+    [Authorize]
     [ProducesResponseType(typeof(ApiResponse<EnrollmentResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<ApiResponse<EnrollmentResponse>>> UpdateEnrollment(
-        int id,
+        [FromRoute] int id,
         [FromBody] UpdateEnrollmentRequest request,
         CancellationToken cancellationToken)
     {
@@ -103,12 +108,13 @@ public class EnrollmentsController(IEnrollmentService enrollmentService, IMapper
     /// Deletes an enrollment.
     /// </summary>
     [HttpDelete("{id:int}")]
+    [Authorize]
     [ProducesResponseType(typeof(ApiResponse<object?>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<ApiResponse<object?>>> DeleteEnrollment(
-        int id,
+        [FromRoute] int id,
         CancellationToken cancellationToken)
     {
         await enrollmentService.DeleteAsync(id, cancellationToken);

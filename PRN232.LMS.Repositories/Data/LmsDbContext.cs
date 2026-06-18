@@ -10,6 +10,8 @@ public class LmsDbContext(DbContextOptions<LmsDbContext> options) : DbContext(op
     public DbSet<Course> Courses => Set<Course>();
     public DbSet<Student> Students => Set<Student>();
     public DbSet<Enrollment> Enrollments => Set<Enrollment>();
+    public DbSet<User> Users => Set<User>();
+    public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -20,6 +22,8 @@ public class LmsDbContext(DbContextOptions<LmsDbContext> options) : DbContext(op
         ConfigureCourse(modelBuilder);
         ConfigureStudent(modelBuilder);
         ConfigureEnrollment(modelBuilder);
+        ConfigureUser(modelBuilder);
+        ConfigureRefreshToken(modelBuilder);
 
         modelBuilder.Entity<Semester>().HasData(CreateSemesters());
         modelBuilder.Entity<Subject>().HasData(CreateSubjects());
@@ -130,6 +134,61 @@ public class LmsDbContext(DbContextOptions<LmsDbContext> options) : DbContext(op
                 .OnDelete(DeleteBehavior.Restrict);
 
             entity.HasIndex(enrollment => new { enrollment.StudentId, enrollment.CourseId })
+                .IsUnique();
+        });
+    }
+
+    private static void ConfigureUser(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<User>(entity =>
+        {
+            entity.HasKey(user => user.UserId);
+
+            entity.Property(user => user.Username)
+                .HasMaxLength(50)
+                .IsRequired();
+
+            entity.Property(user => user.PasswordHash)
+                .HasMaxLength(255)
+                .IsRequired();
+
+            entity.Property(user => user.Role)
+                .HasMaxLength(20)
+                .IsRequired();
+
+            entity.Property(user => user.CreatedAt)
+                .IsRequired();
+
+            entity.Property(user => user.IsActive)
+                .IsRequired();
+
+            entity.HasIndex(user => user.Username)
+                .IsUnique();
+        });
+    }
+
+    private static void ConfigureRefreshToken(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<RefreshToken>(entity =>
+        {
+            entity.HasKey(refreshToken => refreshToken.RefreshTokenId);
+
+            entity.Property(refreshToken => refreshToken.TokenHash)
+                .HasMaxLength(255)
+                .IsRequired();
+
+            entity.Property(refreshToken => refreshToken.ExpiresAt)
+                .IsRequired();
+
+            entity.Property(refreshToken => refreshToken.CreatedAt)
+                .IsRequired();
+
+            entity.HasOne(refreshToken => refreshToken.User)
+                .WithMany(user => user.RefreshTokens)
+                .HasForeignKey(refreshToken => refreshToken.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasIndex(refreshToken => refreshToken.TokenHash)
                 .IsUnique();
         });
     }

@@ -12,6 +12,7 @@ public class CourseService(
     IGenericRepository<Semester> semesterRepository,
     IGenericRepository<Subject> subjectRepository,
     IGenericRepository<Enrollment> enrollmentRepository,
+    IGenericRepository<Student> studentRepository,
     IMapper mapper) : LmsServiceBase(mapper), ICourseService
 {
     public async Task<PagedResultBusinessModel<CourseBusinessModel>> GetAsync(
@@ -58,6 +59,29 @@ public class CourseService(
         var result = await enrollmentRepository.GetPagedAsync(options, cancellationToken);
 
         return ToPagedResult<Enrollment, EnrollmentBusinessModel>(result);
+    }
+
+    public async Task<PagedResultBusinessModel<StudentBusinessModel>> GetStudentsAsync(
+        int id,
+        QueryParametersBusinessModel query,
+        CancellationToken cancellationToken = default)
+    {
+        if (!await courseRepository.AnyAsync(course => course.CourseId == id, cancellationToken))
+        {
+            throw NotFound("Course", id);
+        }
+
+        var options = LmsQueryConfigurations.ForStudents(
+            query.Search,
+            query.Sort,
+            query.Expand,
+            Page(query),
+            Size(query));
+        options.Filter = student => student.Enrollments.Any(enrollment => enrollment.CourseId == id);
+
+        var result = await studentRepository.GetPagedAsync(options, cancellationToken);
+
+        return ToPagedResult<Student, StudentBusinessModel>(result);
     }
 
     public async Task<CourseBusinessModel> CreateAsync(CourseBusinessModel model, CancellationToken cancellationToken = default)

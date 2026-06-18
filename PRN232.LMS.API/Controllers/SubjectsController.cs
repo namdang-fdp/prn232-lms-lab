@@ -1,4 +1,6 @@
 using AutoMapper;
+using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PRN232.LMS.API.Common.Response;
 using PRN232.LMS.API.Models.Requests;
@@ -10,7 +12,8 @@ using PRN232.LMS.Services.Services;
 
 namespace PRN232.LMS.API.Controllers;
 
-[Route("api/subjects")]
+[ApiVersion(1.0)]
+[Route("api/v{version:apiVersion}/subjects")]
 [Produces("application/json", "application/xml")]
 public class SubjectsController(ISubjectService subjectService, IMapper mapper) : LmsControllerBase
 {
@@ -37,12 +40,12 @@ public class SubjectsController(ISubjectService subjectService, IMapper mapper) 
     /// <summary>
     /// Gets a subject by identifier with related course and semester data.
     /// </summary>
-    [HttpGet("{id:int}")]
+    [HttpGet("{id:int}", Name = "GetSubjectByIdV1")]
     [ProducesResponseType(typeof(ApiResponse<SubjectResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<ApiResponse<SubjectResponse>>> GetSubject(
-        int id,
+        [FromRoute] int id,
         CancellationToken cancellationToken)
     {
         try
@@ -62,6 +65,7 @@ public class SubjectsController(ISubjectService subjectService, IMapper mapper) 
     /// Creates a subject.
     /// </summary>
     [HttpPost]
+    [Authorize]
     [ProducesResponseType(typeof(ApiResponse<SubjectResponse>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status500InternalServerError)]
@@ -73,9 +77,9 @@ public class SubjectsController(ISubjectService subjectService, IMapper mapper) 
         var created = await subjectService.CreateAsync(model, cancellationToken);
         var response = mapper.Map<SubjectResponse>(created);
 
-        return CreatedAtAction(
-            nameof(GetSubject),
-            new { id = response.SubjectId },
+        return CreatedAtRoute(
+            "GetSubjectByIdV1",
+            new { version = "1", id = response.SubjectId },
             new ApiResponse<SubjectResponse>(response, "Subject created successfully."));
     }
 
@@ -83,12 +87,13 @@ public class SubjectsController(ISubjectService subjectService, IMapper mapper) 
     /// Updates a subject.
     /// </summary>
     [HttpPut("{id:int}")]
+    [Authorize]
     [ProducesResponseType(typeof(ApiResponse<SubjectResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<ApiResponse<SubjectResponse>>> UpdateSubject(
-        int id,
+        [FromRoute] int id,
         [FromBody] UpdateSubjectRequest request,
         CancellationToken cancellationToken)
     {
@@ -103,12 +108,13 @@ public class SubjectsController(ISubjectService subjectService, IMapper mapper) 
     /// Deletes a subject.
     /// </summary>
     [HttpDelete("{id:int}")]
+    [Authorize]
     [ProducesResponseType(typeof(ApiResponse<object?>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<ApiResponse<object?>>> DeleteSubject(
-        int id,
+        [FromRoute] int id,
         CancellationToken cancellationToken)
     {
         await subjectService.DeleteAsync(id, cancellationToken);

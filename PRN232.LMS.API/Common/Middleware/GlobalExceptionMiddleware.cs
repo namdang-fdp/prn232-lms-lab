@@ -1,7 +1,7 @@
 using System.Net;
 using System.Text.Json;
-using PRN232.LMS.API.Common.Response;
 using PRN232.LMS.API.Common.Exceptions;
+using PRN232.LMS.API.Common.Response;
 using PRN232.LMS.Services.Exceptions;
 
 namespace PRN232.LMS.API.Common.Middleware;
@@ -23,43 +23,54 @@ public class GlobalExceptionMiddleware
         {
             await _next(context);
         }
-        catch (Exception ex)
+        catch (Exception exception)
         {
-            _logger.LogError(ex, "An unexpected error occurred.");
-            await HandleExceptionAsync(context, ex);
+            if (context.Response.HasStarted)
+            {
+                _logger.LogError(exception, "An exception occurred after the response started.");
+                throw;
+            }
+
+            await HandleExceptionAsync(context, exception);
         }
     }
 
-    private static Task HandleExceptionAsync(HttpContext context, Exception exception)
+    private Task HandleExceptionAsync(HttpContext context, Exception exception)
     {
+        context.Response.Clear();
         context.Response.ContentType = "application/json";
 
         var response = new ApiResponse<object>
         {
             Success = false,
-            Data = null
+            Data = null,
+            Errors = null
         };
 
         switch (exception)
         {
             case ApiException apiEx:
+                _logger.LogWarning(apiEx, "API exception handled with status code {StatusCode}.", apiEx.StatusCode);
                 context.Response.StatusCode = apiEx.StatusCode;
                 response.Message = apiEx.Message;
                 break;
             case ServiceException serviceEx:
+                _logger.LogWarning(serviceEx, "Service exception handled with status code {StatusCode}.", serviceEx.StatusCode);
                 context.Response.StatusCode = serviceEx.StatusCode;
                 response.Message = serviceEx.Message;
                 response.Errors = serviceEx.Errors;
                 break;
-            // Catch FluentValidation errors later here
             default:
+                _logger.LogError(exception, "Unhandled exception occurred while processing the request.");
                 context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                response.Message = "Internal Server Error";
-                // Optionally add stack trace in dev env, but keep it secure for prod
+                response.Message = "Internal server error.";
                 break;
         }
 
-        var result = JsonSerializer.Serialize(response, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+        var result = JsonSerializer.Serialize(
+            response,
+            new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+
         return context.Response.WriteAsync(result);
     }
 }

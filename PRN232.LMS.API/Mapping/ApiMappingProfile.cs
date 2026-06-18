@@ -36,5 +36,7 @@ public class ApiMappingProfile : Profile
         CreateMap<UpdateEnrollmentRequest, EnrollmentBusinessModel>();
         CreateMap<EnrollmentSummaryBusinessModel, EnrollmentSummaryResponse>();
         CreateMap<EnrollmentBusinessModel, EnrollmentResponse>();
+
+        CreateMap<AuthTokenBusinessModel, AuthTokenResponse>();
     }
 }

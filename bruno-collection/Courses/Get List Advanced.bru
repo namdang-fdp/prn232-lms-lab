@@ -10,6 +10,14 @@ get {
   auth: none
 }
 
+params:query {
+  search: Course
+  sort: -courseName
+  page: 1
+  size: 5
+  fields: courseId,courseName,semesterId,subjectId
+}
+
 headers {
   Accept: application/json
 }
